@@ -75,7 +75,7 @@ small{font-size:18px}
 
 /* ---------- new-design lesson screens (.game.v2) ---------- */
 .game.v2{background:#bfe6ff center/cover no-repeat;min-height:100vh;min-height:100dvh;padding:8px;display:flex;flex-direction:column}
-.game.v2[data-scene=station]{background-image:url(../img/scene_station.webp)}
+.game.v2:not([data-scene]),.game.v2[data-scene=""],.game.v2[data-scene=station]{background-image:url(../img/scene_station.webp)}
 .game.v2[data-scene=workshop]{background-image:url(../img/scene_workshop.webp)}
 .game.v2[data-scene=farm]{background-image:url(../img/scene_farm.webp)}
 .v2 .taskbar{background:rgba(255,255,255,.94);border-radius:28px;padding:8px;box-shadow:0 6px 14px rgba(0,0,0,.12)}
@@ -198,3 +198,10 @@ small{font-size:18px}
 .v2-tens:has(.v2-bundle + .v2-bundle) .v2-bundle{--bh:calc(var(--bw)*1.08)}
 .v2-ones.lots{--pw:min(42px,11vw,6vh);--ph:calc(var(--pw)*1.5);max-width:calc(var(--pw)*7 + 40px)}
 .skin-pencil .v2-ones.lots{--pw:min(28px,7vw);max-width:none}
+/* keep the goal corner free; actions fit beside the companion */
+.v2goal ~ .v2board .v2-tens{padding-left:86px}
+.v2goal ~ .v2board .v2-tens:not(:has(.v2-bundle + .v2-bundle)){justify-content:center}
+.v2-actions{gap:8px;padding-inline-end:86px}
+.v2-actions .btn{min-width:68px;min-height:72px}
+.v2-actions .done{min-width:100px}
+.v2 .comp-avatar{width:clamp(80px,22vw,120px)}

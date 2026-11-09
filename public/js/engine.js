@@ -23,7 +23,7 @@ export function mountGame(app, { onHome } = {}) {
   $('.home', root).onclick = () => { stop(); onHome && onHome(); };
   return root;
 }
-export function clearPlay() { G.play.innerHTML = ''; setScene(null); comeBack(); return G.play; }
+export function clearPlay() { G.play.innerHTML = ''; comeBack(); return G.play; }
 // ---------------------------------------------------------------- companion poses (generated art) and scenes
 export const COMP_KEY = { 1: 'cat', 2: 'bird', 3: 'bee' };
 export const poseSrc = (p, k = S().settings.companion || 1) => `img/${COMP_KEY[k] || 'cat'}_${p}.webp`;
