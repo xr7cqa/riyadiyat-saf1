@@ -8,7 +8,7 @@ export const UNIT6 = {
   id: 6, title: 'الأعداد حتى ٢٠', pages: [7, 34],
   lessons: [
     {
-      id: 'u6l1', code: '٦-١', page: 8, pages: [8, 9, 10, 11], title: 'العددان ١١ و١٢', game: 'ورشة الأقلام',
+      id: 'u6l1', code: '٦-١', page: 8, pages: [8, 9, 10, 11], place: 'workshop', title: 'العددان ١١ و١٢', game: 'ورشة الأقلام',
       skill: 'تكوين ١١ و١٢ من حزمة عشرة وآحاد', range: [11, 12], skin: 'pencil', needs: ['count', 'match10', 'make10'],
       home: 'حطّوا ١٢ قلمًا على الطاولة، وخلّوه يعدّ عشرة ويربطها بمطّاط، ثم يقول: حزمة وقلمان، اثنا عشر.',
       plan() {
@@ -27,7 +27,7 @@ export const UNIT6 = {
       review(skin) { return pick([{ g: 'see', skin, n: pick([11, 12]) }, { g: 'build', skin, target: pick([11, 12]) }]); },
     },
     {
-      id: 'u6l2', code: '٦-٢', page: 12, pages: [12, 13, 14, 15], title: 'الأعداد ١٣ و١٤ و١٥', game: 'لوحة الخرز',
+      id: 'u6l2', code: '٦-٢', page: 12, pages: [12, 13, 14, 15], place: 'beadshop', title: 'الأعداد ١٣ و١٤ و١٥', game: 'لوحة الخرز',
       skill: 'تكوين ١٣ و١٤ و١٥ ومطابقتها بالعدد المسموع', range: [13, 15], skin: 'bead', needs: ['count', 'match10', 'make10'],
       home: 'رتّبوا ١٤ حبة فاصوليا: صفّين من خمس، ثم أربع حبات تحتها، وخلّوه يقول: عشرة وأربعة، أربعة عشر.',
       plan() {
@@ -46,7 +46,7 @@ export const UNIT6 = {
       review(skin) { return pick([{ g: 'hear', skin, n: rint(13, 15), lo: 11, hi: 17 }, { g: 'see', skin, n: rint(13, 15) }]); },
     },
     {
-      id: 'u6l3', code: '٦-٣', page: 16, pages: [16, 17, 18, 19], title: 'الأعداد ١٦ و١٧ و١٨', game: 'علبتا البيض',
+      id: 'u6l3', code: '٦-٣', page: 16, pages: [16, 17, 18, 19], place: 'farm', title: 'الأعداد ١٦ و١٧ و١٨', game: 'علبتا البيض',
       skill: 'تكوين ١٦ و١٧ و١٨ بإكمال عشرة وآحاد', range: [16, 18], skin: 'egg', needs: ['count', 'match10', 'make10'],
       home: 'جيبوا علبتي بيض (أو كرتونتين)، املأوا الأولى عشرة، وخلّوه يكمل الثانية حتى ١٧ ويقول العدد.',
       plan() {
@@ -65,15 +65,15 @@ export const UNIT6 = {
       review(skin) { return pick([{ g: 'see', skin, n: rint(16, 18) }, { g: 'hear', skin, n: rint(16, 18), lo: 14, hi: 20 }]); },
     },
     {
-      id: 'u6l4', code: '٦-٤', page: 20, pages: [20, 21], title: 'العددان ١٩ و٢٠', game: 'البالون الأخير',
+      id: 'u6l4', code: '٦-٤', page: 20, pages: [20, 21], title: 'العددان ١٩ و٢٠', game: 'محطة البالونات', look: 'v2', place: 'station',
       skill: 'فهم ١٩ و٢٠: عشرتان وصفر آحاد', range: [19, 20], skin: 'balloon', needs: ['count', 'make10'],
       home: 'اعملوا حزمتين من عشرة أعواد، فكّوا واحدة واتركوا ٩، وخلّوه يضيف عودًا فتصير عشرتين: عشرون.',
       plan() {
         return [
-          { g: 'build', phase: 'demo', skin: 'balloon', target: 20, start: 19, bundled: 1, noUntie: true, demoClips: ['l4_demo', 'l4_add', 'l4_twenty'] },
-          { g: 'build', phase: 'guided', skin: 'balloon', target: 20, start: 19, bundled: 1, noUntie: true, clips: ['l4_add'] },
+          { g: 'build', phase: 'demo', skin: 'balloon', target: 20, start: 19, bundled: 1, demoClips: ['l4_demo', 'l4_add', 'l4_twenty'] },
+          { g: 'build', phase: 'guided', skin: 'balloon', target: 20, start: 19, bundled: 1, predict: true, clips: ['l4_add'] },
           { g: 'see', phase: 'solo', skin: 'pencil', n: pick([19, 20]) },
-          { g: 'build', phase: 'solo', skin: 'balloon', target: 19, start: 10, bundled: 1, noUntie: true },
+          { g: 'build', phase: 'solo', skin: 'balloon', target: 19, start: 10, bundled: 1 },
           { g: 'digits', phase: 'solo', skin: 'balloon', n: 20 },
           { g: 'story', phase: 'story', id: 's4' },
           { g: 'see', phase: 'final', skin: 'egg', n: pick([19, 20]) },
@@ -83,7 +83,7 @@ export const UNIT6 = {
       review(skin) { return { g: 'see', skin, n: pick([19, 20]) }; },
     },
     {
-      id: 'u6l5', code: '٦-٥', page: 22, pages: [22, 23, 24, 25], title: 'مقارنة الأعداد ضمن ٢٠', game: 'عمودا الخرز',
+      id: 'u6l5', code: '٦-٥', page: 22, pages: [22, 23, 24, 25], place: 'jars', title: 'مقارنة الأعداد ضمن ٢٠', game: 'عمودا الخرز',
       skill: 'مقارنة عددين ضمن ٢٠ بالكلمات وبالرموز', range: [10, 20], skin: 'bead', needs: ['compare'],
       home: 'اعملوا صفّين من الحصى (١٤ و١٢)، وخلّوه يقابل حصاة بحصاة، ويقول: أربعة عشر أكبر من اثني عشر.',
       plan() {

@@ -32,7 +32,7 @@ for (let r = 0; r < 400; r++) {
 one([6, 8, 10], (v) => v > 7 && v < 9, 'story s5 ages');
 for (const t of [12, 14, 17, 20]) one(numberChoices(t), (v) => v === t, 'story ' + t);
 // every clip referenced in the code exists
-const code = ['games.js', 'session.js', 'main.js', 'content-u6.js', 'engine.js', 'parent.js'].map((f) => fs.readFileSync(path.join(here, '../public/js', f), 'utf8')).join('\n');
+const code = ['games.js', 'session.js', 'main.js', 'content-u6.js', 'engine.js', 'parent.js', 'v2.js', 'audio.js'].map((f) => fs.readFileSync(path.join(here, '../public/js', f), 'utf8')).join('\n');
 const refs = new Set([...code.matchAll(/'((?:t|f|h|l[1-5]|w|c|s[1-5])_[a-z0-9_]+)'/g)].map((m) => m[1]));
 for (const r of refs) if (!clips.has(r) && !/^c_praise_$/.test(r)) bad.push('missing clip ' + r);
 for (let i = 0; i <= 20; i++) if (!clips.has('n_' + i)) bad.push('missing n_' + i);

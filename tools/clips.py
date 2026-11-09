@@ -4,10 +4,14 @@ Roles -> voices are set in VOICES. Personal clips are NOT here (see tools/person
 
 VOICES = {
     # role: (edge-tts voice, rate, pitch)
-    "teacher":   ("ar-YE-MaryamNeural", "-12%", "+0Hz"),   # calm teacher, also the ONE fixed number voice
+    "teacher":   ("ar-YE-MaryamNeural", "-6%", "+3Hz"),    # warm, lively teacher (same voice as the numbers)
+    "tjoy":      ("ar-YE-MaryamNeural", "-2%", "+7Hz", "+8%"),   # teacher, joyful (correct / game end)
+    "tkind":     ("ar-YE-MaryamNeural", "-12%", "-1Hz"),   # teacher, gentle (hints after a mistake)
     "number":    ("ar-YE-MaryamNeural", "-15%", "+0Hz"),   # numbers 0-20: same voice everywhere
     "number0":   ("ar-YE-MaryamNeural", "-25%", "+0Hz"),   # zero: same voice, slower so the ر is clear (ASR-checked)
-    "companion": ("ar-SA-ZariyahNeural", "+0%", "+0Hz"),   # lively female voice (no child voice available)
+    "companion": ("ar-SA-ZariyahNeural", "+4%", "+5Hz"),   # lively female voice (no child voice available)
+    "cjoy":      ("ar-SA-ZariyahNeural", "+6%", "+9Hz", "+10%"),  # companion, joyful like kids' TV
+    "ckind":     ("ar-SA-ZariyahNeural", "-8%", "-2Hz"),   # companion, tender encouragement
     "man":       ("ar-YE-SalehNeural", "-8%", "+0Hz"),
     "man2":      ("ar-SA-HamedNeural", "-8%", "+0Hz"),
     "woman":     ("ar-EG-SalmaNeural", "-8%", "+0Hz"),
@@ -53,10 +57,10 @@ c("t_listen_choose", T, "اسْمَعْ، ثُمَّ اخْتَرِ الْعَد
 c("t_which_pic", T, "أَيُّ صُورَةٍ فِيهَا الْعَدَدُ:")
 c("t_how_many_pic", T, "كَمْ عَدَدُ مَا فِي الصُّورَةِ؟")
 c("t_digits", T, "رَكِّبِ الْعَدَدَ بِالْأَرْقَامِ. ضَعْ رَقْمَ الْعَشَرَاتِ، ثُمَّ رَقْمَ الْآحَادِ.")
-c("t_done_game", T, "أَحْسَنْتَ! أَتْمَمْتَ اللُّعْبَةَ.")
-c("t_mastered", T, "أَحْسَنْتَ! أَتْقَنْتَ هَذَا الدَّرْسَ.")
+c("t_done_game", "tjoy", "أَحْسَنْتَ! أَتْمَمْتَ اللُّعْبَةَ.")
+c("t_mastered", "tjoy", "أَحْسَنْتَ! أَتْقَنْتَ هَذَا الدَّرْسَ.")
 c("t_new_try", T, "جَرِّبْ هَذَا الْمِثَالَ الْجَدِيدَ.")
-c("t_try_again", T, "حَاوِلْ مَرَّةً أُخْرَى.")
+c("t_try_again", "tkind", "حَاوِلْ مَرَّةً أُخْرَى.")
 # ---- foundation rounds
 c("f_count_tap", T, "الْمَسْ كُلَّ وَاحِدَةٍ مَرَّةً وَاحِدَةً، وَعُدَّ مَعِي.")
 c("f_how_many", T, "كَمْ عَدَدُهَا كُلِّهَا؟")
@@ -115,13 +119,39 @@ c("c_hi_2", C, "أَنَا سُكَّرَةُ الْعُصْفُورَةُ. سَ
 c("c_hi_3", C, "أَنَا نُونَا النَّحْلَةُ. سَأَلْعَبُ مَعَكَ!")
 c("c_together", C, "تَعَالَ نُجَرِّبُ مَعًا!")
 c("c_help_tap", C, "الْمَسِ الْقِطْعَةَ، أَوِ اسْحَبْهَا إِلَى هُنَا.")
-c("c_its_ok", C, "لَا بَأْسَ، نُحَاوِلُ مَعًا.")
-c("c_star", C, "حَصَلْتَ عَلَى نَجْمَةٍ لِحَدِيقَتِنَا!")
-c("c_party", C, "هَيَّا نَحْتَفِلُ!")
+c("c_its_ok", "ckind", "لَا بَأْسَ، نُحَاوِلُ مَعًا.")
+c("c_star", "cjoy", "حَصَلْتَ عَلَى نَجْمَةٍ لِحَدِيقَتِنَا!")
+c("c_party", "cjoy", "هَيَّا نَحْتَفِلُ!")
 c("c_bye", C, "إِلَى اللِّقَاءِ!")
 c("c_look", C, "انْظُرْ مَاذَا فَعَلْتُ!")
-for i, t in enumerate(["أَحْسَنْتَ!", "مُمْتَازٌ!", "إِجَابَةٌ صَحِيحَةٌ!", "رَائِعٌ!", "أَحْسَنْتَ، أَنْتَ بَطَلٌ!", "صَحِيحٌ، عَمَلٌ جَمِيلٌ!"], 1):
-    c(f"c_praise_{i}", C, t)
+for i, t in enumerate(["أَحْسَنْتَ!", "مُمْتَازٌ!", "إِجَابَةٌ صَحِيحَةٌ!", "رَائِعٌ!", "أَحْسَنْتَ، أَنْتَ بَطَلٌ!", "صَحِيحٌ، عَمَلٌ جَمِيلٌ!",
+                       "وَاوْ! هَكَذَا تَمَامًا!", "عَمَلٌ رَائِعٌ جِدًّا!", "يَا سَلَامْ! صَحِيحٌ!", "أَنْتَ ذَكِيٌّ!"], 1):
+    c(f"c_praise_{i}", "cjoy", t)
+# ---- the child's name, built in (asked by the parent). TTS spelling «شَمَّهْ» = written «شمّة» (with ة the engine says «شمّت»; ASR-checked)
+c("name_greet", "cjoy", "أَهْلًا يَا مَالِكْ شَمَّهْ! هَيَّا نَلْعَبُ!")
+c("name_praise", "cjoy", "أَحْسَنْتَ يَا مَالِكْ شَمَّهْ!")
+# ---- new design: predict, animations, replay of mistakes, surprise
+c("v_predict_demo", "companion", "مَاذَا سَيَحْدُثُ لَوْ أَضَفْنَا بَالُونًا وَاحِدًا؟")
+c("v_predict_q", T, "قَبْلَ أَنْ تُضِيفَ، تَوَقَّعْ: إِذَا أَضَفْنَا بَالُونًا وَاحِدًا، كَمْ يَصِيرُ الْعَدَدُ؟")
+c("v_predict_ok", "cjoy", "تَوَقُّعُكَ صَحِيحٌ! هَيَّا نَرَى!")
+c("v_predict_see", "ckind", "فِكْرَةٌ جَمِيلَةٌ! لِنَرَ مَعًا مَاذَا يَحْدُثُ.")
+c("v_drag_balloon", T, "اسْحَبِ الْبَالُونَ إِلَى الْبَالُونَاتِ، أَوِ الْمَسْهُ.")
+c("v_ten_formed", "cjoy", "صَارَتْ عَشَرَةً! نَرْبِطُهَا حُزْمَةً!")
+c("v_one_more", "ckind", "زِدْتَ وَاحِدًا عَلَى الْمَطْلُوبِ. الْمَسْ زِرَّ التَّرَاجُعِ.")
+c("v_need_more", "ckind", "يَنْقُصُ قَلِيلًا. لِنَعُدَّ مَعًا.")
+c("v_watch_again", "ckind", "انْظُرْ مَعِي مَرَّةً أُخْرَى.")
+c("v_fix_it", "ckind", "أَصْلِحْهَا بِنَفْسِكَ، أَنْتَ تَقْدِرُ!")
+c("v_swap_see", "tkind", "انْظُرْ! لَمَّا تَبَادَلَ الرَّقْمَانِ مَكَانَيْهِمَا، تَغَيَّرَتِ الْكَمِّيَّةُ.")
+c("v_swap_back", T, "رَقْمُ الْعَشَرَاتِ يَعُدُّ الْحُزَمَ، وَمَكَانُهُ عَلَى الْيَسَارِ. وَرَقْمُ الْآحَادِ يَعُدُّ الْمُفْرَدَةَ، وَمَكَانُهُ عَلَى الْيَمِينِ.")
+c("v_tens_here", "ckind", "الْحُزَمُ هُنَا: هَذِهِ عَشَرَاتٌ.")
+c("v_untie_info", T, "يُمْكِنُكَ أَنْ تَلْمِسَ الْحُزْمَةَ لِتَفُكَّهَا، وَأَنْ تَتَرَاجَعَ بِزِرِّ السَّهْمِ.")
+c("v_untied", "companion", "فَكَكْنَاهَا: صَارَتْ عَشَرَةً مُفْرَدَةً.")
+c("v_gift", "cjoy", "مُفَاجَأَةٌ! الْمَسِ الْهَدِيَّةَ!")
+c("v_sticker", "cjoy", "مُلْصَقٌ جَدِيدٌ لِعَالَمِكَ!")
+c("v_world_grow", "companion", "انْظُرْ، عَالَمُكَ يَكْبُرُ مَعَ نُجُومِكَ!")
+c("v_station", T, "أَهْلًا بِكَ فِي مَحَطَّةِ الْبَالُونَاتِ!")
+c("v_workshop", T, "هَذِهِ وَرْشَةُ الْأَقْلَامِ.")
+c("v_farm", T, "وَهَذِهِ مَزْرَعَةُ الْبَيْضِ.")
 # ---- stories (word problems) with character voices
 c("s1_n", T, "ذَهَبَ سَامِي مَعَ أَبِيهِ إِلَى الدُّكَّانِ.")
 c("s1_father", "man", "يَا سَامِي، هَذِهِ حُزْمَةٌ فِيهَا عَشَرَةُ أَقْلَامٍ، وَهَذَانِ قَلَمَانِ.")
@@ -146,3 +176,7 @@ c("l5_pick_big", T, "الْمَسِ الْعَدَدَ الْأَكْبَرَ.")
 c("l5_pick_small", T, "الْمَسِ الْعَدَدَ الْأَصْغَرَ.")
 c("l5_count_dots", T, "عُدَّ الْخَرَزَ فِي كُلِّ لَوْحَةٍ، ثُمَّ قَارِنْ.")
 c("t_next", T, "هَيَّا إِلَى التَّالِي.")
+
+# hints are spoken gently
+for k, (role, text) in list(CLIPS.items()):
+    if k.startswith("h_") and role == T: CLIPS[k] = ("tkind", text)

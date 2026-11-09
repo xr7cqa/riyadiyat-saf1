@@ -120,8 +120,53 @@ async def choose_num(pg, v, wrong=None):
     await tap(pg, f'.num-cards .card[data-v="{v}"]')
     return None, None
 
+# ---- new-design (v2) lesson ص ٢٠: predict overlay, tray -> board (tap or drag), auto-tie, done, number cards
+async def v2_board(pg):
+    return await pg.evaluate("() => { const b = document.querySelector('.play .v2board:not(.static)'); return b ? {n: +b.dataset.n, tens: +b.dataset.tens, loose: +b.dataset.loose} : null }")
+async def solve_v2_build(pg, target, use_drag=False):
+    await pg.locator('.play .v2board:not(.static)').wait_for(timeout=30000)
+    for _ in range(80):
+        if await pg.locator('.predict:not(.out) .card:not([disabled])').count():
+            await idle(pg); await pg.locator('.predict .card:not([disabled])').first.click()
+            await pg.locator('.predict').wait_for(state='detached', timeout=20000); continue
+        s = await v2_board(pg)
+        if s['loose'] >= 10: await pg.wait_for_timeout(300); continue
+        if s['n'] < target:
+            if await pg.locator('.game.busy').count(): await pg.wait_for_timeout(150); continue
+            p = pg.locator('.v2board .tb-tray .piece').first
+            if use_drag: await drag(pg, p, '.v2board .tb-board')
+            else: await p.click()
+            await pg.wait_for_timeout(150); continue
+        break
+    s = await v2_board(pg)
+    check('v2 board reached target', s['n'] == target, f"{s} target {target}")
+    await idle(pg, 30000); await tap(pg, '.v2board .done')
+
+async def solve_v2(pg, step, mistakes):
+    g = step['g']
+    if g == 'build':
+        if step.get('phase') == 'demo':
+            await pg.locator('.num-cards .card.right').wait_for(timeout=60000); return
+        await solve_v2_build(pg, step['target'], use_drag=step.get('phase') == 'guided')
+        await choose_num(pg, step['target'])
+    elif g == 'see': await choose_num(pg, step['n'])
+    elif g == 'digits':
+        await pg.locator('.tile').first.wait_for(timeout=30000); await idle(pg)
+        t, o = divmod(step['n'], 10)
+        await tap(pg, f'.tile[data-d="{t}"]'); await pg.wait_for_timeout(150); await tap(pg, f'.tile[data-d="{o}"]')
+    elif g == 'story':
+        await pg.locator('.play .v2board:not(.static)').wait_for(timeout=60000)
+        await solve_v2_build(pg, 20); await choose_num(pg, 20)
+
 async def solve(pg, step, mistakes):
     g = step['g']
+    if g == 'gameEnd':
+        try:
+            await pg.locator('.surprise .gift').wait_for(timeout=8000); await pg.locator('.surprise .gift').click()
+        except Exception: pass
+        return
+    if await pg.locator('.game.v2').count() and g in ('build', 'see', 'digits', 'story'):
+        return await solve_v2(pg, step, mistakes)
     if g in ('say', 'probeEnd', 'warmups', 'gameEnd', 'close'): return
     if step.get('phase') == 'demo' and g == 'build': return   # watch only
     if g == 'build':
@@ -345,9 +390,10 @@ async def main():
         check('after the daily session the start button is replaced by "see you tomorrow"', await pg.locator('.btn.start').count() == 0)
         stv = await pg.evaluate("JSON.parse(localStorage.getItem('riyadiyat-saf1-v1'))")
         check('lesson 6-1 passed 2 independent examples -> waits for confirmation in a later session', stv['lessons']['u6l1']['stage'] in ('confirm',), stv['lessons']['u6l1']['stage'])
-        check('greeting played (generic)', 't_welcome' in await pg.evaluate('window.__audioLog'))
+        check('greeting with the built-in name played on first tap', 'name_greet' in await pg.evaluate('window.__audioLog'))
+        check('name praise at game end + alternating with generic praise', 'name_praise' in await pg.evaluate('window.__audioLog'))
         praises = [x for x in await pg.evaluate('window.__audioLog') if str(x).startswith('c_praise_')]
-        check('praise phrases vary', len(set(praises)) >= 3, str(praises[:8]))
+        check('praise phrases vary', len(set(praises)) >= 2, str(praises[:8]))
         check('game-end praise played', 't_done_game' in await pg.evaluate('window.__audioLog'))
         await check_index(pg, 'after session 1')
         await layout(pg, 'home with index')
@@ -399,4 +445,4 @@ async def main():
     json.dump(R, open(f'/tmp/e2e-{W}x{H}.json', 'w'), ensure_ascii=False, indent=1)
     print(json.dumps({'viewport': R['viewport'], 'steps': R['steps'], 'checks': len(R['checks']), 'fail': R['fail'], 'layout_fail': R['layout_fail'][:15], 'n_layout_fail': len(R['layout_fail'])}, ensure_ascii=False, indent=1))
 
-asyncio.run(main())
+if __name__ == "__main__": asyncio.run(main())

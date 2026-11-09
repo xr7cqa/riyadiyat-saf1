@@ -3,7 +3,7 @@ import { S, getClip } from './store.js';
 import { sleep } from './fmt.js';
 
 const cache = new Map();
-const personal = { p_greet: null, p_praise: null };
+const personal = { p_greet: null, p_praise: null };   // parent's own recordings override the built-in name clips
 let current = null, token = 0, unlocked = false;
 export const log = [];  // played ids (used by tests)
 window.__audioLog = log;
@@ -60,7 +60,14 @@ export function unlock() {
 export function sfx(kind) {
   if (!ctx) return;
   const v = S().settings.volume * 0.18;
-  const notes = { pop: [520], ok: [660, 880], tie: [440, 550, 660], soft: [300], party: [523, 659, 784, 1046] }[kind] || [440];
+  if (kind === 'inflate' || kind === 'whoosh') { // short filtered noise sweep
+    const len = kind === 'inflate' ? 0.35 : 0.25, buf = ctx.createBuffer(1, ctx.sampleRate * len, ctx.sampleRate), d = buf.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / d.length);
+    const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain(); src.buffer = buf; f.type = 'bandpass'; f.Q.value = 4;
+    const t = ctx.currentTime; f.frequency.setValueAtTime(kind === 'inflate' ? 300 : 1200, t); f.frequency.exponentialRampToValueAtTime(kind === 'inflate' ? 1400 : 300, t + len);
+    g.gain.value = v * 1.6; src.connect(f); f.connect(g); g.connect(ctx.destination); src.start(t); return;
+  }
+  const notes = { pop: [520], snap: [880, 1320], ok: [660, 880, 1046], tie: [523, 659, 784, 1046], soft: [300], undo: [600, 450], party: [523, 659, 784, 1046, 1318], open: [392, 523, 659, 784, 1046, 1318] }[kind] || [440];
   notes.forEach((f, i) => {
     const o = ctx.createOscillator(), g = ctx.createGain();
     o.type = 'sine'; o.frequency.value = f;
@@ -69,5 +76,9 @@ export function sfx(kind) {
     o.connect(g); g.connect(ctx.destination); o.start(t); o.stop(t + 0.25);
   });
 }
-let lastPraise = 0;
-export function praiseId() { let i; do { i = 1 + Math.floor(Math.random() * 6); } while (i === lastPraise); lastPraise = i; return `c_praise_${i}`; }
+let lastPraise = 0, praiseN = 0;
+export function praiseId() { let i; do { i = 1 + Math.floor(Math.random() * 10); } while (i === lastPraise); lastPraise = i; return `c_praise_${i}`; }
+/** the child's name (built in, or the parent's recording) alternates with varied generic praise */
+export const nameGreet = () => (personal.p_greet ? 'p_greet' : 'name_greet');
+export const namePraise = () => (personal.p_praise ? 'p_praise' : 'name_praise');
+export function nextPraise() { praiseN++; return praiseN % 2 === 1 ? namePraise() : praiseId(); }
