@@ -1,8 +1,9 @@
 // Daily session: placement/foundation rounds, 2 review questions, today's lesson (watch -> together -> alone), last independent task, gentle close.
 import { S, save, lesson as L, addError } from './store.js';
 import { todayKey, pick, sleep } from './fmt.js';
-import { say, hasPersonal } from './audio.js';
-import { mountGame, task, speak, celebrate, updateStars, clearPlay, h } from './engine.js';
+import { say, hasPersonal, namePraise } from './audio.js';
+import { V2GAMES, surprise } from './v2.js';
+import { mountGame, task, speak, celebrate, updateStars, clearPlay, h, G } from './engine.js';
 import { GAMES } from './games.js';
 import { LESSONS, lessonById, FOUNDATION, skinsExcept } from './content-u6.js';
 
@@ -108,20 +109,18 @@ async function runStep(step, plan) {
     plan.steps.splice(plan.idx + 1, 0, ...items);
     return null;
   }
-  if (step.g === 'gameEnd') {
-    await celebrate([hasPersonal('p_praise') ? 'p_praise' : 't_done_game'], false);
-    return null;
-  }
+  if (step.g === 'gameEnd') { clearPlay(); await surprise(); return null; }   // small surprise + the child's name, always
   if (step.g === 'close') {
     clearPlay(); st.sessions.doneDay = todayKey(); save();
     await task('انتهت جلسة اليوم. نلتقي غدًا', ['t_bye', 'c_bye']);
     return 'close';
   }
-  const fn = GAMES[step.g];
-  const res = await fn(step);
+  const v2 = step.lesson && lessonById(step.lesson)?.look === 'v2' && V2GAMES[step.g];
+  const fn = v2 || GAMES[step.g];
+  const res = v2 ? await fn(step, GAMES[step.g]) : await fn(step);
   record(step, res);
   updateStars();
-  if (step._mastered) await celebrate([hasPersonal('p_praise') ? 'p_praise' : 't_mastered', 'c_party'], true);
+  if (step._mastered) await celebrate([namePraise(), 't_mastered', 'c_party'], true);
   // after a wrong answer in independent work: hint was given, now a NEW example in the same familiar context
   if (res && res.retry && step.lesson && plan.retries < 4 && !step.isRetry) {
     const l = lessonById(step.lesson);
@@ -147,6 +146,7 @@ export async function runSession(app, { onExit, resume = false, forceLesson = nu
     const step = plan.steps[plan.idx];
     document.body.dataset.step = `${plan.idx}:${step.g}:${step.phase || ''}`;
     window.__rs1 = { step, idx: plan.idx, plan };
+    G.root && G.root.classList.toggle('v2', (step.lesson ? lessonById(step.lesson)?.look : step.skill ? null : lessonById(plan.lesson)?.look) === 'v2');  // new design only for the trial lesson
     const tag = document.querySelector('.phase-tag'); if (tag) tag.remove();
     if (step.phase && document.querySelector('.taskbar')) document.querySelector('.taskbar').appendChild(h(`<span class="phase-tag">${PHASE_LABEL[step.phase] || ''}</span>`));
     const r = await runStep(step, plan);

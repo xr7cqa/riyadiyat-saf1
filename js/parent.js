@@ -6,7 +6,9 @@ import { h, $, $$ } from './engine.js';
 import { LESSONS, FOUNDATION, UNIT6 } from './content-u6.js';
 import { offlineStatus } from './pwa.js';
 
-// The child's name is never in the published files: it is typed by the parent and kept on the phone only.
+// The child's name is built into the site (parent's explicit request): clips name_greet / name_praise.
+// A recording made or imported here (kept on this phone only) overrides the built-in clip.
+export const CHILD_NAME = 'مَالِكْ شَمَّةْ';
 export const PERSONAL = {
   p_greet: { label: 'الترحيب الشخصي', text: (n) => `أَهْلًا يَا ${n}! هَيَّا نَلْعَبُ وَنَتَعَلَّمُ الرِّيَاضِيَّاتِ` },
   p_praise: { label: 'التشجيع الشخصي', text: (n) => `أَحْسَنْتَ يَا ${n}` },
@@ -70,10 +72,10 @@ export function openParent(app, { onClose }) {
      <button class="btn extra">${st.sessions.extraDay === todayKey() ? 'الجلسة الإضافية مفتوحة ✓' : 'فتح جلسة إضافية اليوم'}</button>
      <label class="sel">مستوى الصوت <input type="range" class="vol" min="0" max="1" step="0.05" value="${st.settings.volume}"></label><button class="btn ghost test">تجربة الصوت</button>
      <button class="btn danger reset">إعادة ضبط التقدم</button></section>
-   <section><h3>التخصيص (يُحفظ على هذا الجوال فقط)</h3>
-     <label class="sel">اسم الطفل بالتشكيل (للشهادة ونص المقاطع): <input class="cname" value="${esc(st.settings.childName)}" maxlength="30"></label>
-     ${Object.entries(PERSONAL).map(([k, p]) => `<div class="pclip" data-k="${k}"><b>${p.label}</b><p class="ptext">النص الذي يُسجَّل: «${esc(p.text(st.settings.childName || '[اسم الطفل بالتشكيل]'))}»</p>
-       <div class="row"><button class="btn rec">🎙️ سجّل</button><label class="btn ghost imp">📁 استيراد ملف<input type="file" accept="audio/*" hidden></label><button class="btn ghost play">▶ استمع</button><button class="btn ghost del">حذف</button></div><small class="pstat">${hasPersonal(k) ? 'محفوظ على الجوال ✓ (يُشغَّل بدل المقطع العام)' : 'غير مضبوط: يُشغَّل المقطع العام'}</small></div>`).join('')}
+   <section><h3>اسم الطفل وصوته</h3><p class="note">الاسم «مالك شمّة» مدمج في الموقع: ترحيب عند أول ضغطة، وتشجيع بالاسم مع الإجابات الصحيحة بالتناوب، ودائمًا في نهاية اللعبة. إن سجّلتم أو استوردتم مقطعًا هنا يُشغَّل بدل المقطع المدمج (يُحفظ على هذا الجوال فقط).</p>
+     <label class="sel">اسم الطفل بالتشكيل (للشهادة): <input class="cname" value="${esc(st.settings.childName || CHILD_NAME)}" maxlength="30"></label>
+     ${Object.entries(PERSONAL).map(([k, p]) => `<div class="pclip" data-k="${k}"><b>${p.label}</b><p class="ptext">النص الذي يُسجَّل: «${esc(p.text(st.settings.childName || CHILD_NAME))}»</p>
+       <div class="row"><button class="btn rec">🎙️ سجّل</button><label class="btn ghost imp">📁 استيراد ملف<input type="file" accept="audio/*" hidden></label><button class="btn ghost play">▶ استمع</button><button class="btn ghost del">حذف</button></div><small class="pstat">${hasPersonal(k) ? 'تسجيلكم محفوظ ✓ (يُشغَّل بدل المقطع المدمج)' : 'يُشغَّل المقطع المدمج بالاسم'}</small></div>`).join('')}
      <button class="btn ghost cert">معاينة الشهادة</button></section>
    <section><h3>التشغيل بدون نت</h3><p class="offline">جارٍ الفحص…</p><button class="btn ghost recheck">افحص الآن</button></section>
    <footer class="ver">نسخة ${ar(window.__VERSION__ || '')}</footer>
@@ -84,7 +86,7 @@ export function openParent(app, { onClose }) {
   $('.vol', el).oninput = (e) => { st.settings.volume = +e.target.value; save(); };
   $('.test', el).onclick = () => say('t_welcome');
   $('.reset', el).onclick = () => { if (confirm('سيُمسح التقدم والنجوم. هل أنت متأكد؟') && confirm('تأكيد أخير: إعادة الضبط؟')) { reset(); onClose(); } };
-  $('.cname', el).onchange = (e) => { st.settings.childName = e.target.value.trim(); save(); $$('.pclip', el).forEach((b) => { $('.ptext', b).textContent = `النص الذي يُسجَّل: «${PERSONAL[b.dataset.k].text(st.settings.childName || '[اسم الطفل بالتشكيل]')}»`; }); };
+  $('.cname', el).onchange = (e) => { st.settings.childName = e.target.value.trim(); save(); $$('.pclip', el).forEach((b) => { $('.ptext', b).textContent = `النص الذي يُسجَّل: «${PERSONAL[b.dataset.k].text(st.settings.childName || CHILD_NAME)}»`; }); };
   $('.cert', el).onclick = () => certificate();
   $$('.pclip', el).forEach((box) => wireClip(box));
   const chk = async () => { const s = await offlineStatus(); $('.offline', el).innerHTML = s.ready ? '<b class="ready">جاهز بدون نت ✓</b> تم تنزيل كل الدروس والأصوات على هذا الجوال.' : `لم يكتمل التنزيل بعد: ${num(s.have)} من ${num(s.total)} ملفًا. افتحوا الموقع والإنترنت متاح قليلًا.`; };
@@ -94,7 +96,7 @@ export function openParent(app, { onClose }) {
 function wireClip(box) {
   const k = box.dataset.k; const stat = $('.pstat', box);
   let rec = null, chunks = [];
-  const done = async (blob) => { await putClip(k, blob); await loadPersonal(); stat.textContent = 'محفوظ على الجوال ✓ (يُشغَّل بدل المقطع العام)'; };
+  const done = async (blob) => { await putClip(k, blob); await loadPersonal(); stat.textContent = 'تسجيلكم محفوظ ✓ (يُشغَّل بدل المقطع المدمج)'; };
   $('.rec', box).onclick = async (e) => {
     const b = e.target;
     if (rec) { rec.stop(); return; }
@@ -107,12 +109,12 @@ function wireClip(box) {
     } catch (err) { stat.textContent = 'تعذّر فتح المايك. يمكن استيراد ملف بدلًا من ذلك.'; }
   };
   $('input[type=file]', box).onchange = async (e) => { const f = e.target.files[0]; if (f) await done(f); };
-  $('.play', box).onclick = () => say(k);
-  $('.del', box).onclick = async () => { await delClip(k); await loadPersonal(); stat.textContent = 'غير مضبوط: يُشغَّل المقطع العام'; };
+  $('.play', box).onclick = () => say(hasPersonal(k) ? k : (k === 'p_greet' ? 'name_greet' : 'name_praise'));
+  $('.del', box).onclick = async () => { await delClip(k); await loadPersonal(); stat.textContent = 'يُشغَّل المقطع المدمج بالاسم'; };
 }
 
 export function certificate() {
-  const st = S(); const name = st.settings.childName || '…';
+  const st = S(); const name = st.settings.childName || CHILD_NAME;
   const c = document.createElement('canvas'); c.width = 1200; c.height = 850; const g = c.getContext('2d');
   g.fillStyle = '#fff8e7'; g.fillRect(0, 0, 1200, 850);
   g.strokeStyle = '#ff7aa8'; g.lineWidth = 18; g.strokeRect(30, 30, 1140, 790);

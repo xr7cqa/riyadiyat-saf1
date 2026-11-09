@@ -1,6 +1,6 @@
 // Shared game engine: screen frame, task bar, companion, drag-or-tap pieces, cards, ten boards, comparison rows, digit slots.
 import { ar, num, sleep } from './fmt.js';
-import { say, stop, sfx, praiseId, log as audioLog } from './audio.js';
+import { say, stop, sfx, praiseId, nextPraise, log as audioLog } from './audio.js';
 import { S, save } from './store.js';
 import * as A from './art.js';
 
@@ -12,11 +12,10 @@ export function h(html) { const t = document.createElement('template'); t.innerH
 export const G = { root: null, play: null, replay: [], busy: false };
 export function mountGame(app, { onHome } = {}) {
   app.innerHTML = '';
-  const comp = A.companions[S().settings.companion || 1];
   const root = h(`<div class="screen game">
     <header class="taskbar"><button class="icon replay" aria-label="أعد الاستماع">🔊</button><div class="task-text" aria-live="polite"></div><button class="icon home" aria-label="الرئيسية">🏠</button></header>
     <main class="play"></main>
-    <footer class="compbar"><div class="comp-avatar">${comp.svg}</div><div class="stars-mini">${A.star()}<span class="stars-n">${ar(S().stars)}</span></div></footer>
+    <footer class="compbar"><div class="comp-avatar"><img class="comp-img" alt="" src="${poseSrc('wave')}"></div><div class="stars-mini">${A.star()}<span class="stars-n">${ar(S().stars)}</span></div></footer>
   </div>`);
   app.appendChild(root);
   G.root = root; G.play = $('.play', root);
@@ -24,7 +23,30 @@ export function mountGame(app, { onHome } = {}) {
   $('.home', root).onclick = () => { stop(); onHome && onHome(); };
   return root;
 }
-export function clearPlay() { G.play.innerHTML = ''; return G.play; }
+export function clearPlay() { G.play.innerHTML = ''; comeBack(); return G.play; }
+// ---------------------------------------------------------------- companion poses (generated art) and scenes
+export const COMP_KEY = { 1: 'cat', 2: 'bird', 3: 'bee' };
+export const poseSrc = (p, k = S().settings.companion || 1) => `img/${COMP_KEY[k] || 'cat'}_${p}.webp`;
+export const v2log = []; window.__v2log = v2log;
+export function pose(p) {
+  const im = G.root && $('.comp-img', G.root); if (!im) return;
+  if (im.dataset.pose !== p) { im.src = poseSrc(p); im.dataset.pose = p; im.parentElement.classList.remove('bob'); void im.offsetWidth; im.parentElement.classList.add('bob'); }
+}
+export function setScene(name) { if (G.root) { if (name) G.root.dataset.scene = name; else delete G.root.dataset.scene; } }
+/** the companion flies next to `el`, faces it and points (used after a mistake) */
+export async function pointAt(el, clips, p = 'point') {
+  const av = G.root && $('.comp-avatar', G.root); if (!av || !el) { if (clips) await speak(clips); return; }
+  const r = el.getBoundingClientRect(), a = av.getBoundingClientRect();
+  const side = r.left > innerWidth / 2 ? 'left' : 'right';           // stand on the free side of the target
+  const w = a.width, x = side === 'left' ? Math.max(4, r.left - w * 0.9) : Math.min(innerWidth - w - 4, r.right - w * 0.1);
+  const y = Math.min(innerHeight - a.height - 4, Math.max(70, r.top + r.height / 2 - a.height / 2));
+  av.classList.add('pointing'); av.classList.toggle('flip', side === 'right' ? false : true);
+  av.style.setProperty('--px', (x - a.left) + 'px'); av.style.setProperty('--py', (y - a.top) + 'px');
+  el.classList.add('pointed'); pose(p); v2log.push('point');
+  if (clips) await speak(clips); else await sleep(900);
+  el.classList.remove('pointed');
+}
+export function comeBack() { const av = G.root && $('.comp-avatar', G.root); if (av) { av.classList.remove('pointing', 'flip'); av.style.removeProperty('--px'); av.style.removeProperty('--py'); } pose('wave'); }
 export async function task(text, clips = [], { wait = true } = {}) {
   $('.task-text', G.root).innerHTML = `<span class="tt">${text}</span>`; // inline span: keeps the real space between a word and an isolated number
   G.replay = clips;
@@ -35,7 +57,7 @@ export async function task(text, clips = [], { wait = true } = {}) {
 export async function speak(clips) { talking(true); await say(clips); talking(false); }
 export function talking(on) { G.root && G.root.classList.toggle('talking', on); }
 export function updateStars() { const e = G.root && $('.stars-n', G.root); if (e) e.textContent = ar(S().stars); }
-export async function praise() { sfx('ok'); await speak([praiseId()]); }
+export async function praise() { sfx('ok'); pose('cheer'); G.root && G.root.classList.add('cheer'); await speak([nextPraise()]); G.root && G.root.classList.remove('cheer'); pose('wave'); }
 export function setBusy(b) { G.busy = b; G.root && G.root.classList.toggle('busy', b); }
 
 // ---------------------------------------------------------------- drag or tap
@@ -72,7 +94,7 @@ export function draggable(el, { onTap, onDrop }) {
       over && over.classList.remove('over');
       if (!ghost) { if (ev.type === 'pointerup' && onTap) onTap(); return; }
       const z = zoneAt(ev.clientX, ev.clientY);
-      const ok = z && onDrop ? onDrop(z) : false;
+      const ok = z && onDrop ? onDrop(z, { x: ev.clientX, y: ev.clientY }) : false;
       if (ok) { ghost.remove(); el.classList.remove('dragging'); return; }
       missCount++; S().misses++; sfx('soft');
       ghost.style.transition = 'transform .35s ease'; ghost.style.transform = 'translate(0,0)';
