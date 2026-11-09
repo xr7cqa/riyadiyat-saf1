@@ -13,7 +13,7 @@
   [
    "v1 installed: one complete cache",
    true,
-   "{\"keys\": [\"riyadiyat-87c17f56a9\"], \"ctl\": true, \"caches\": {\"riyadiyat-87c17f56a9\": {\"have\": 151, \"total\": 151, \"mark\": true}}, \"active\": \"http://127.0.0.1:8932/sw.js\", \"waiting\": false, \"installing\": false}"
+   "{\"keys\": [\"riyadiyat-359bdef11b\"], \"ctl\": true, \"caches\": {\"riyadiyat-359bdef11b\": {\"have\": 215, \"total\": 215, \"mark\": true}}, \"active\": \"http://127.0.0.1:8932/sw.js\", \"waiting\": false, \"installing\": false}"
   ],
   [
    "failing file: new version is rejected (install fails -> redundant)",
@@ -23,27 +23,27 @@
   [
    "failing file: partial new cache discarded, old cache kept complete",
    true,
-   "{\"keys\": [\"riyadiyat-87c17f56a9\"], \"ctl\": true, \"caches\": {\"riyadiyat-87c17f56a9\": {\"have\": 151, \"total\": 151, \"mark\": true}}, \"active\": \"http://127.0.0.1:8932/sw.js\", \"waiting\": false, \"installing\": false}"
+   "{\"keys\": [\"riyadiyat-359bdef11b\"], \"ctl\": true, \"caches\": {\"riyadiyat-359bdef11b\": {\"have\": 215, \"total\": 215, \"mark\": true}}, \"active\": \"http://127.0.0.1:8932/sw.js\", \"waiting\": false, \"installing\": false}"
   ],
   [
    "failing file: page keeps running the old version",
    true,
-   "87c17f56a9"
+   "359bdef11b"
   ],
   [
    "«جاهز بدون نت» reflects the complete (old) cache",
    true,
-   "{\"ready\": true, \"have\": 151, \"total\": 151, \"version\": \"87c17f56a9\"}"
+   "{\"ready\": true, \"have\": 215, \"total\": 215, \"version\": \"359bdef11b\"}"
   ],
   [
    "retry: complete new version activates and only then the old cache is deleted",
    true,
-   "activated {\"keys\": [\"riyadiyat-testv2\"], \"ctl\": true, \"caches\": {\"riyadiyat-testv2\": {\"have\": 151, \"total\": 151, \"mark\": true}}, \"active\": \"http://127.0.0.1:8932/sw.js\", \"waiting\": false, \"installing\": false}"
+   "activated {\"keys\": [\"riyadiyat-testv2\"], \"ctl\": true, \"caches\": {\"riyadiyat-testv2\": {\"have\": 215, \"total\": 215, \"mark\": true}}, \"active\": \"http://127.0.0.1:8932/sw.js\", \"waiting\": false, \"installing\": false}"
   ],
   [
    "very slow network (8 s latency, 2 KB/s): app opens from the saved copy at once",
    true,
-   "0.03s"
+   "0.04s"
   ],
   [
    "control: same slow network without the saved copy is slow",

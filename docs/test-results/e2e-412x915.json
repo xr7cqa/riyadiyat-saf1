@@ -33,7 +33,7 @@
   [
    "board reached target",
    true,
-   "{'n': 11, 'tens': 1, 'bundle': True, 'balloon': False} target 11"
+   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False} target 12"
   ],
   [
    "placement rounds then warm-up for weak skill",
@@ -56,9 +56,9 @@
    "23 vs 23"
   ],
   [
-   "reversed digits -> place-value hint (tens/ones highlighted + h_pv)",
+   "digit tiles reversed -> place-value hint",
    true,
-   "['h_pv', 't_new_try']"
+   "['t_digits', 'h_pv', 't_new_try']"
   ],
   [
    "board reached target",
@@ -81,14 +81,19 @@
    "confirm"
   ],
   [
-   "greeting played (generic)",
+   "greeting with the built-in name played on first tap",
+   true,
+   ""
+  ],
+  [
+   "name praise at game end + alternating with generic praise",
    true,
    ""
   ],
   [
    "praise phrases vary",
    true,
-   "['c_praise_3', 'c_praise_1', 'c_praise_6', 'c_praise_1']"
+   "['c_praise_9', 'c_praise_3']"
   ],
   [
    "game-end praise played",
@@ -151,14 +156,14 @@
    "{'n': 14, 'tens': 1, 'bundle': False, 'balloon': False} target 14"
   ],
   [
-   "digit tiles reversed -> place-value hint",
-   true,
-   "['t_digits', 'h_pv', 't_new_try']"
-  ],
-  [
    "board reached target",
    true,
    "{'n': 14, 'tens': 1, 'bundle': False, 'balloon': False} target 14"
+  ],
+  [
+   "reversed digits -> place-value hint (tens/ones highlighted + h_pv)",
+   true,
+   "['h_pv', 't_new_try']"
   ],
   [
    "u6l2 session completes",
@@ -188,7 +193,7 @@
   [
    "board reached target",
    true,
-   "{'n': 18, 'tens': 1, 'bundle': False, 'balloon': False} target 18"
+   "{'n': 17, 'tens': 1, 'bundle': False, 'balloon': False} target 17"
   ],
   [
    "board reached target",
@@ -216,19 +221,19 @@
    "{\"lesson\": \"u6l4\", \"gs\": [\"\", \"\", \"u6l4\", \"\", \"u6l4\", \"\", \"u6l4\", \"u6l4\", \"u6l4\", \"u6l4\", \"\", \"u6l4\", \"u6l4\", \"\"]}"
   ],
   [
-   "board reached target",
+   "v2 board reached target",
    true,
-   "{'n': 20, 'tens': 2, 'bundle': True, 'balloon': True} target 20"
+   "{'n': 20, 'tens': 2, 'loose': 0} target 20"
   ],
   [
-   "board reached target",
+   "v2 board reached target",
    true,
-   "{'n': 19, 'tens': 1, 'bundle': True, 'balloon': True} target 19"
+   "{'n': 19, 'tens': 1, 'loose': 9} target 19"
   ],
   [
-   "board reached target",
+   "v2 board reached target",
    true,
-   "{'n': 20, 'tens': 2, 'bundle': True, 'balloon': True} target 20"
+   "{'n': 20, 'tens': 2, 'loose': 0} target 20"
   ],
   [
    "u6l4 session completes",
@@ -281,19 +286,19 @@
    "['h_sym', 'l5_left']"
   ],
   [
-   "compare 12 ? 10: first number on the right & opening faces bigger",
+   "compare 18 ? 13: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 255, \"bx\": 103.515625, \"open\": \"right\", \"at\": \"١٢\", \"bt\": \"١٠\"}"
+   "{\"ax\": 255, \"bx\": 103.515625, \"open\": \"right\", \"at\": \"١٨\", \"bt\": \"١٣\"}"
   ],
   [
-   "compare 20 ? 20: first number on the right & opening faces bigger",
+   "compare 19 ? 19: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 255, \"bx\": 103.515625, \"open\": \"eq\", \"at\": \"٢٠\", \"bt\": \"٢٠\"}"
+   "{\"ax\": 255, \"bx\": 103.515625, \"open\": \"eq\", \"at\": \"١٩\", \"bt\": \"١٩\"}"
   ],
   [
-   "compare 20 ? 19: first number on the right & opening faces bigger",
+   "compare 13 ? 12: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 255, \"bx\": 103.515625, \"open\": \"right\", \"at\": \"٢٠\", \"bt\": \"١٩\"}"
+   "{\"ax\": 255, \"bx\": 103.515625, \"open\": \"right\", \"at\": \"١٣\", \"bt\": \"١٢\"}"
   ],
   [
    "u6l5 session completes",
@@ -319,11 +324,6 @@
    "wrong lock answer changes nothing",
    true,
    ""
-  ],
-  [
-   "board reached target",
-   true,
-   "{'n': 11, 'tens': 1, 'bundle': False, 'balloon': False} target 11"
   ],
   [
    "board reached target",
@@ -360,14 +360,14 @@
    true,
    {
     "stage": "mastered",
-    "streak": 10,
+    "streak": 9,
     "passDay": "2026-11-10",
     "attempts": 14,
     "correct": 13,
     "skins": [
      "pencil",
      "bead",
-     "egg"
+     "balloon"
     ],
     "passSession": 1,
     "masteredDay": "2026-11-10"

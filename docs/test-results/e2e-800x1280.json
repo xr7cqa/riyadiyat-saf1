@@ -81,14 +81,19 @@
    "confirm"
   ],
   [
-   "greeting played (generic)",
+   "greeting with the built-in name played on first tap",
+   true,
+   ""
+  ],
+  [
+   "name praise at game end + alternating with generic praise",
    true,
    ""
   ],
   [
    "praise phrases vary",
    true,
-   "['c_praise_4', 'c_praise_2', 'c_praise_4', 'c_praise_1']"
+   "['c_praise_3', 'c_praise_7']"
   ],
   [
    "game-end praise played",
@@ -148,7 +153,7 @@
   [
    "board reached target",
    true,
-   "{'n': 14, 'tens': 1, 'bundle': False, 'balloon': False} target 14"
+   "{'n': 15, 'tens': 1, 'bundle': False, 'balloon': False} target 15"
   ],
   [
    "digit tiles reversed -> place-value hint",
@@ -188,7 +193,7 @@
   [
    "board reached target",
    true,
-   "{'n': 17, 'tens': 1, 'bundle': False, 'balloon': False} target 17"
+   "{'n': 18, 'tens': 1, 'bundle': False, 'balloon': False} target 18"
   ],
   [
    "board reached target",
@@ -216,19 +221,19 @@
    "{\"lesson\": \"u6l4\", \"gs\": [\"\", \"\", \"u6l4\", \"\", \"u6l4\", \"\", \"u6l4\", \"u6l4\", \"u6l4\", \"u6l4\", \"\", \"u6l4\", \"u6l4\", \"\"]}"
   ],
   [
-   "board reached target",
+   "v2 board reached target",
    true,
-   "{'n': 20, 'tens': 2, 'bundle': True, 'balloon': True} target 20"
+   "{'n': 20, 'tens': 2, 'loose': 0} target 20"
   ],
   [
-   "board reached target",
+   "v2 board reached target",
    true,
-   "{'n': 19, 'tens': 1, 'bundle': True, 'balloon': True} target 19"
+   "{'n': 19, 'tens': 1, 'loose': 9} target 19"
   ],
   [
-   "board reached target",
+   "v2 board reached target",
    true,
-   "{'n': 20, 'tens': 2, 'bundle': True, 'balloon': True} target 20"
+   "{'n': 20, 'tens': 2, 'loose': 0} target 20"
   ],
   [
    "u6l4 session completes",
@@ -281,19 +286,19 @@
    "['h_sym', 'l5_left']"
   ],
   [
-   "compare 19 ? 12: first number on the right & opening faces bigger",
+   "compare 16 ? 20: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"right\", \"at\": \"١٩\", \"bt\": \"١٢\"}"
+   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"left\", \"at\": \"١٦\", \"bt\": \"٢٠\"}"
   ],
   [
-   "compare 12 ? 12: first number on the right & opening faces bigger",
+   "compare 15 ? 15: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"eq\", \"at\": \"١٢\", \"bt\": \"١٢\"}"
+   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"eq\", \"at\": \"١٥\", \"bt\": \"١٥\"}"
   ],
   [
-   "compare 10 ? 12: first number on the right & opening faces bigger",
+   "compare 16 ? 11: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"left\", \"at\": \"١٠\", \"bt\": \"١٢\"}"
+   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"right\", \"at\": \"١٦\", \"bt\": \"١١\"}"
   ],
   [
    "u6l5 session completes",
@@ -333,7 +338,7 @@
   [
    "board reached target",
    true,
-   "{'n': 11, 'tens': 1, 'bundle': True, 'balloon': False} target 11"
+   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False} target 12"
   ],
   [
    "board reached target",

@@ -1,0 +1,307 @@
+{
+ "checks": [
+  [
+   "big targets/text on [pick companion] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "first tap greets with the built-in name",
+   true,
+   "['t_pick_companion', 'c_hi_1', 'name_greet']"
+  ],
+  [
+   "big targets/text on [home world] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "world map with 5 places (one per lesson) and all images loaded",
+   true,
+   "5 True"
+  ],
+  [
+   "big targets/text on [index] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "index [v2 fresh]: book titles in order, grouped by unit 6..10, status matches progress",
+   true,
+   "{\"items\": [{\"id\": \"u6l1\", \"t\": \"ص ٨ العددان ١١ و١٢\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l2\", \"t\": \"ص ١٢ الأعداد ١٣ و١٤ و١٥\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l3\", \"t\": \"ص ١٦ الأعداد ١٦ و١٧ و١٨\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l4\", \"t\": \"ص ٢٠ العددان ١٩ و٢٠\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l5\", \"t\": \"ص ٢٢ مقارنة الأعداد ضمن ٢٠\", \"s\": \"لم يبدأ\"}], \"want\": {\"u6l1\": \"لم يبدأ\", \"u6l2\": \"لم يبدأ\", \"u6l3\": \"لم يبدأ\", \"u6l4\": \"لم يبدأ\", \"u6l5\": \"لم يبدأ\"}, \"units\": [\"الوحدة ٦: الأعداد حتى ٢٠\", \"الوحدة ٧: الجمع والطرح ضمن ٢٠\", \"الوحدة ٨: الأعداد ضمن ١٠٠\", \"الوحدة ٩: الجمع والطرح ضمن ١٠٠\", \"الوحدة ١٠: القياس\"]}"
+  ],
+  [
+   "tapping the station on the map (+ parent question) opens ص ٢٠",
+   true,
+   "u6l4"
+  ],
+  [
+   "v2 frame + scene on build/demo",
+   true,
+   ""
+  ],
+  [
+   "demo: companion points, balloon flies + inflates, second ten ties itself",
+   true,
+   "['point', 'add', 'inflate', 'tie']"
+  ],
+  [
+   "demo: 19 + 1 -> two tens, no ones",
+   true,
+   "{'n': 20, 'tens': 2, 'loose': 0}"
+  ],
+  [
+   "big targets/text on [demo end] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "v2 frame + scene on build/guided",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [predict] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "predict before adding (not graded): wrong guess -> \"let us see\"",
+   true,
+   "['v_predict_see', 'l4_add']"
+  ],
+  [
+   "big targets/text on [guided board] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "drag: ghost follows the finger + landing preview on the board",
+   true,
+   "{'ghost': True, 'over': True, 'prev': 'block'}"
+  ],
+  [
+   "drop snaps in -> 20 forms the second ten (auto-tie)",
+   true,
+   "{'n': 20, 'tens': 2, 'loose': 0}"
+  ],
+  [
+   "drop: add + inflate + tie events",
+   true,
+   "['add', 'inflate', 'tie']"
+  ],
+  [
+   "undo: un-ties and sends the balloon back (19 = ten + nine)",
+   true,
+   "{'n': 19, 'tens': 1, 'loose': 9} anims 22"
+  ],
+  [
+   "unbundle: tap a ten -> its ten balloons come apart (same amount)",
+   true,
+   "{'n': 19, 'tens': 0, 'loose': 19} anims 20"
+  ],
+  [
+   "\"done\" with ten loose ones -> companion points at the tie button (h_tie_first)",
+   true,
+   ""
+  ],
+  [
+   "undo of an unbundle re-ties the ten",
+   true,
+   "{'n': 19, 'tens': 1, 'loose': 9}"
+  ],
+  [
+   "v2 frame + scene on see/solo",
+   true,
+   ""
+  ],
+  [
+   "wrong number card -> companion goes to the picture and the count is replayed",
+   true,
+   "['point', 'replay:count'] pointing=True"
+  ],
+  [
+   "wrong card is disabled, he chooses again himself",
+   true,
+   ""
+  ],
+  [
+   "v2 frame + scene on see/solo",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [see/solo] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "v2 frame + scene on build/solo",
+   true,
+   ""
+  ],
+  [
+   "too few -> count replayed (each piece hops) + \"add more\"",
+   true,
+   ""
+  ],
+  [
+   "one too many -> the amount is shown, companion points at undo",
+   true,
+   "['replay:over', 'morph:20', 'point']"
+  ],
+  [
+   "he fixes it himself with undo",
+   true,
+   "{'n': 19, 'tens': 1, 'loose': 9}"
+  ],
+  [
+   "v2 frame + scene on build/solo",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [build/solo] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "v2 board reached target",
+   true,
+   "{'n': 20, 'tens': 2, 'loose': 0} target 20"
+  ],
+  [
+   "v2 frame + scene on digits/solo",
+   true,
+   ""
+  ],
+  [
+   "swapped digits -> the picture turns into the wrong amount, then back; slots cleared",
+   true,
+   "['replay:swap', 'morph:2', 'point', 'morph:20', 'point'] shown=2"
+  ],
+  [
+   "big targets/text on [digits] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "v2 frame + scene on digits/solo",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [digits/solo] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "v2 frame + scene on story/story",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [story] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [story/story] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "v2 board reached target",
+   true,
+   "{'n': 20, 'tens': 2, 'loose': 0} target 20"
+  ],
+  [
+   "v2 frame + scene on see/final",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [see/final] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [surprise] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "surprise after the game: gift opens, sticker saved, name praise + end praise",
+   true,
+   "['name_praise', 't_done_game', 'v_sticker', 't_bye'] stickers 0->1"
+  ],
+  [
+   "correct answers: name praise alternates with varied generic praise",
+   true,
+   "['name_praise', 'c_praise_6', 'name_praise', 'c_praise_9', 'name_praise', 'c_praise_10', 'name_praise', 'name_praise']"
+  ],
+  [
+   "all stages of ص ٢٠ visited",
+   true,
+   ""
+  ],
+  [
+   "the garden grows with his stars and shows the new sticker",
+   true,
+   "{'fl': 5, 'stk': 1, 'stars': 5}"
+  ],
+  [
+   "big targets/text on [home after] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "short tap does not open the parent lock",
+   true,
+   ""
+  ],
+  [
+   "wrong lock answer changes nothing",
+   true,
+   ""
+  ],
+  [
+   "big targets/text on [parent panel] (tap >= 64px, text >= 18px)",
+   true,
+   ""
+  ],
+  [
+   "parent panel says the name is built in and recordings override it",
+   true,
+   ""
+  ],
+  [
+   "no JS errors",
+   true,
+   "[]"
+  ]
+ ],
+ "fail": [],
+ "steps": 0,
+ "layout_fail": [],
+ "viewport": "412x915",
+ "big": [
+  "pick companion",
+  "home world",
+  "index",
+  "demo end",
+  "predict",
+  "guided board",
+  "see/solo",
+  "build/solo",
+  "digits",
+  "digits/solo",
+  "story",
+  "story/story",
+  "see/final",
+  "surprise",
+  "home after",
+  "parent panel"
+ ],
+ "ok": true
+}
