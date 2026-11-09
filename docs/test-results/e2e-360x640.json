@@ -1,0 +1,343 @@
+{
+ "checks": [
+  [
+   "count-once: re-tapping a counted object does not count it",
+   true,
+   ""
+  ],
+  [
+   "count-once: re-tapping a counted object does not count it",
+   true,
+   ""
+  ],
+  [
+   "drop outside returns piece, no maths error",
+   true,
+   "misses 0->1 n 0->0 errors 1->1"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False} target 12"
+  ],
+  [
+   "untie shows ten single pencils again",
+   true,
+   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False}->{'n': 12, 'tens': 0, 'bundle': True, 'balloon': False}"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 11, 'tens': 1, 'bundle': True, 'balloon': False} target 11"
+  ],
+  [
+   "placement rounds then warm-up for weak skill",
+   true,
+   ""
+  ],
+  [
+   "warm-up items for the weak skill (make10) inserted before lesson",
+   true,
+   "['warmups::', 'makeTen:warmup:make10', 'makeTen:warmup:make10']"
+  ],
+  [
+   "home offers to continue after reload",
+   true,
+   ""
+  ],
+  [
+   "progress survives reload mid-game (same step, same stars)",
+   true,
+   "23 vs 23"
+  ],
+  [
+   "reversed digits -> place-value hint (tens/ones highlighted + h_pv)",
+   true,
+   "['h_pv', 't_new_try']"
+  ],
+  [
+   "digit tiles reversed -> place-value hint",
+   true,
+   "['t_digits', 'h_pv', 't_new_try']"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False} target 12"
+  ],
+  [
+   "session 1 reaches the gentle close",
+   true,
+   ""
+  ],
+  [
+   "after the daily session the start button is replaced by \"see you tomorrow\"",
+   true,
+   ""
+  ],
+  [
+   "lesson 6-1 passed 2 independent examples -> waits for confirmation in a later session",
+   true,
+   "confirm"
+  ],
+  [
+   "greeting played (generic)",
+   true,
+   ""
+  ],
+  [
+   "praise phrases vary",
+   true,
+   "['c_praise_6', 'c_praise_3', 'c_praise_6', 'c_praise_2']"
+  ],
+  [
+   "game-end praise played",
+   true,
+   ""
+  ],
+  [
+   "short tap does not open the parent lock",
+   true,
+   ""
+  ],
+  [
+   "wrong lock answer keeps panel closed",
+   true,
+   ""
+  ],
+  [
+   "parent summary sentence present",
+   true,
+   "يعدّ ويكوّن الأعداد حتى ١٠، ويحتاج يتدرّب على: تكوين ١١ و١٢ من حزمة عشرة وآحاد."
+  ],
+  [
+   "parent panel lists real errors",
+   true,
+   ""
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 14, 'tens': 1, 'bundle': False, 'balloon': False} target 14"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 15, 'tens': 1, 'bundle': False, 'balloon': False} target 15"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 14, 'tens': 1, 'bundle': False, 'balloon': False} target 14"
+  ],
+  [
+   "u6l2 session completes",
+   true,
+   ""
+  ],
+  [
+   "u6l2 passed (confirm stage)",
+   true,
+   "confirm"
+  ],
+  [
+   "short tap does not open the parent lock",
+   true,
+   ""
+  ],
+  [
+   "wrong lock answer keeps panel closed",
+   true,
+   ""
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 11, 'tens': 1, 'bundle': False, 'balloon': False} target 11"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 17, 'tens': 1, 'bundle': False, 'balloon': False} target 17"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 17, 'tens': 1, 'bundle': False, 'balloon': False} target 17"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 17, 'tens': 1, 'bundle': False, 'balloon': False} target 17"
+  ],
+  [
+   "u6l3 session completes",
+   true,
+   ""
+  ],
+  [
+   "u6l3 passed (confirm stage)",
+   true,
+   "confirm"
+  ],
+  [
+   "short tap does not open the parent lock",
+   true,
+   ""
+  ],
+  [
+   "wrong lock answer keeps panel closed",
+   true,
+   ""
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 20, 'tens': 2, 'bundle': True, 'balloon': True} target 20"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 19, 'tens': 1, 'bundle': True, 'balloon': True} target 19"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 20, 'tens': 2, 'bundle': True, 'balloon': True} target 20"
+  ],
+  [
+   "u6l4 session completes",
+   true,
+   ""
+  ],
+  [
+   "u6l4 passed (confirm stage)",
+   true,
+   "confirm"
+  ],
+  [
+   "short tap does not open the parent lock",
+   true,
+   ""
+  ],
+  [
+   "wrong lock answer keeps panel closed",
+   true,
+   ""
+  ],
+  [
+   "compare 14 ? 12: first number on the right & opening faces bigger",
+   true,
+   "{\"ax\": 229, \"bx\": 88.046875, \"open\": \"right\", \"at\": \"١٤\", \"bt\": \"١٢\"}"
+  ],
+  [
+   "compare 13 ? 15: first number on the right & opening faces bigger",
+   true,
+   "{\"ax\": 229, \"bx\": 88.046875, \"open\": \"left\", \"at\": \"١٣\", \"bt\": \"١٥\"}"
+  ],
+  [
+   "mirrored symbol -> \"opening faces the bigger number\" hint + bead rows",
+   true,
+   "['h_sym', 'l5_left']"
+  ],
+  [
+   "compare 15 ? 20: first number on the right & opening faces bigger",
+   true,
+   "{\"ax\": 229, \"bx\": 88.046875, \"open\": \"left\", \"at\": \"١٥\", \"bt\": \"٢٠\"}"
+  ],
+  [
+   "compare 15 ? 10: first number on the right & opening faces bigger",
+   true,
+   "{\"ax\": 229, \"bx\": 88.046875, \"open\": \"right\", \"at\": \"١٥\", \"bt\": \"١٠\"}"
+  ],
+  [
+   "compare 17 ? 18: first number on the right & opening faces bigger",
+   true,
+   "{\"ax\": 229, \"bx\": 88.046875, \"open\": \"left\", \"at\": \"١٧\", \"bt\": \"١٨\"}"
+  ],
+  [
+   "u6l5 session completes",
+   true,
+   ""
+  ],
+  [
+   "u6l5 passed (confirm stage)",
+   true,
+   "confirm"
+  ],
+  [
+   "lesson 6-1 mastered after the confirmation in a later session on another material",
+   true,
+   {
+    "stage": "mastered",
+    "streak": 7,
+    "passDay": "2026-11-09",
+    "attempts": 12,
+    "correct": 10,
+    "skins": [
+     "pencil",
+     "bead",
+     "balloon",
+     "egg"
+    ],
+    "passSession": 1,
+    "masteredDay": "2026-11-09"
+   }
+  ],
+  [
+   "mastery praise/celebration played",
+   true,
+   ""
+  ],
+  [
+   "short tap does not open the parent lock",
+   true,
+   ""
+  ],
+  [
+   "wrong lock answer keeps panel closed",
+   true,
+   ""
+  ],
+  [
+   "parent sees \"جاهز بدون نت\" after full download",
+   true,
+   ""
+  ],
+  [
+   "offline reload shows the app",
+   true,
+   ""
+  ],
+  [
+   "compare 15 ? 12: first number on the right & opening faces bigger",
+   true,
+   "{\"ax\": 229, \"bx\": 88.046875, \"open\": \"right\", \"at\": \"١٥\", \"bt\": \"١٢\"}"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 11, 'tens': 1, 'bundle': False, 'balloon': False} target 11"
+  ],
+  [
+   "compare 14 ? 12: first number on the right & opening faces bigger",
+   true,
+   "{\"ax\": 229, \"bx\": 88.046875, \"open\": \"right\", \"at\": \"١٤\", \"bt\": \"١٢\"}"
+  ],
+  [
+   "offline: games run and audio files load from cache",
+   true,
+   "[]"
+  ],
+  [
+   "no JS errors",
+   true,
+   "['Failed to load resource: net::ERR_FAILED']"
+  ]
+ ],
+ "fail": [],
+ "steps": 110,
+ "layout_fail": [],
+ "viewport": "360x640",
+ "ok": true
+}
