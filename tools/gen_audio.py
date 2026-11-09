@@ -12,7 +12,7 @@ STAMP = os.path.join(ROOT, "tools", ".audio-stamps.json")
 
 def compress(src, dst):
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", src,
-        "-af", "silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,apad=pad_dur=0.12",
+        "-af", "silenceremove=start_periods=1:start_threshold=-62dB:start_silence=0.06,areverse,silenceremove=start_periods=1:start_threshold=-62dB:start_silence=0.08,areverse,apad=pad_dur=0.12",
         "-ac", "1", "-ar", "24000", "-b:a", "32k", dst], check=True)
 
 async def one(cid, role, text, sem):

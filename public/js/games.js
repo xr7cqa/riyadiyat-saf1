@@ -51,7 +51,7 @@ export async function build(step) {
   const t = step.target;
   const top = h(`<div class="goal">${num(t, 'big')}</div>`); P.appendChild(top);
   if (step.hideGoal) top.style.visibility = 'hidden';
-  const board = new TensBoard(P, { skin: step.skin, start: step.start || 0, bundled: step.bundled, pile: step.pile ?? Math.min(14, t - (step.start || 0) + 3), autoTie: step.skin === 'balloon', minN: step.start || 0, noUntie: !!step.noUntie });
+  const board = new TensBoard(P, { skin: step.skin, start: step.start || 0, bundled: step.bundled, pile: step.pile ?? (t - (step.start || 0) + 2), autoTie: step.skin === 'balloon', minN: step.start || 0, noUntie: !!step.noUntie });
   const demo = step.phase === 'demo';
   if (demo) {
     setBusy(true);
