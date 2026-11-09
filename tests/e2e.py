@@ -28,6 +28,15 @@ LAYOUT_JS = r'''() => {
     r.setStart(tn, 0); r.setEnd(tn, 1); const a = r.getBoundingClientRect(); r.setStart(tn, 1); r.setEnd(tn, 2); const c = r.getBoundingClientRect();
     if (!(a.left < c.left)) out.order.push(t);
   }
+  out.glued = [];
+  const lastRect = (tn, end) => { const r = document.createRange(); const L = tn.textContent.length; if (end) { r.setStart(tn, L - 1); r.setEnd(tn, L); } else { r.setStart(tn, 0); r.setEnd(tn, 1); } return r.getBoundingClientRect(); };
+  for (const b of document.querySelectorAll('bdi.num')) {
+    if (!b.getClientRects().length) continue; const B = b.getBoundingClientRect();
+    const p = b.previousSibling, n = b.nextSibling;
+    if (p && p.nodeType === 3 && /\S$/.test(p.textContent) && !/(^|\s)و$/.test(p.textContent)) { const t = lastRect(p, true); if (t.width && Math.abs(t.top - B.top) < B.height && t.left - B.right < 3) out.glued.push(p.textContent.slice(-8) + '|' + b.textContent); }
+    if (n && n.nodeType === 3 && /^\S/.test(n.textContent) && !/^[،.:!؟)]/.test(n.textContent)) { const t = lastRect(n, false); if (t.width && Math.abs(t.top - B.top) < B.height && B.left - t.right < 3) out.glued.push(b.textContent + '|' + n.textContent.slice(0, 8)); }
+  }
+  out.dom = [...document.querySelectorAll('.dominoes .frame .cell')].map((c) => c.getBoundingClientRect().width).filter((w) => w).reduce((m, w) => Math.min(m, w), 999);
   return out; }'''
 
 async def layout(pg, tag):
@@ -38,6 +47,10 @@ async def layout(pg, tag):
     if L['small']: bad.append('small ' + '; '.join(L['small'][:3]))
     if L['latin']: bad.append('latin digits: ' + L['latin'][0])
     if L['order']: bad.append('digit order ' + ','.join(L['order']))
+    if L['glued']: bad.append('word glued to number ' + ','.join(L['glued'][:3]))
+    if L['dom'] < 999:
+        R.setdefault('domino_cell_px', []).append(round(L['dom'], 1))
+        if L['dom'] < 18: bad.append(f"domino beads too small {L['dom']:.0f}px")
     if bad: R['layout_fail'].append(f'{tag}: ' + ' | '.join(bad))
 
 async def st(pg): return await pg.evaluate('window.__rs1 ? {idx: window.__rs1.idx, step: window.__rs1.step} : null')
@@ -248,18 +261,49 @@ async def play_until(pg, stop_pred, mistakes, maxsteps=200, tag=''):
         await layout(pg, f"{tag} #{s['idx']} {s['step']['g']}/{s['step'].get('phase', '')} after")
     return 'max'
 
+async def answer_lock(pg, wrong_first=True):
+    await pg.locator('.modal').wait_for(timeout=3000)
+    q = await pg.locator('.modal p').filter(has_text='×').inner_text()
+    ar = '٠١٢٣٤٥٦٧٨٩'; nums = [int(''.join(str(ar.index(c)) for c in x)) for x in re.findall('[٠-٩]+', q)]
+    if wrong_first:
+        await pg.locator('.keys button[data-d="1"]').click(); await pg.locator('.modal .ok').click()
+        await pg.wait_for_timeout(300)
+        check('wrong lock answer changes nothing', await pg.locator('.modal').count() == 1 and await pg.evaluate("document.body.dataset.screen") == 'home')
+        await pg.locator('.keys button[data-d="x"]').click()
+    for d in str(nums[0] * nums[1]): await pg.locator(f'.keys button[data-d="{d}"]').click()
+    await pg.locator('.modal .ok').click()
+
+EXPECT_TITLES = {'u6l1': 'ص ٨ العددان ١١ و١٢', 'u6l2': 'ص ١٢ الأعداد ١٣ و١٤ و١٥', 'u6l3': 'ص ١٦ الأعداد ١٦ و١٧ و١٨', 'u6l4': 'ص ٢٠ العددان ١٩ و٢٠', 'u6l5': 'ص ٢٢ مقارنة الأعداد ضمن ٢٠'}
+STATUS = {'new': 'لم يبدأ', 'learning': 'يتدرب', 'confirm': 'يتدرب', 'mastered': 'أتقنه'}
+async def check_index(pg, tag):
+    items = await pg.evaluate("[...document.querySelectorAll('.idx-lesson')].map(b => ({id: b.dataset.id, t: b.querySelector('.idx-t').innerText.replace(/\\s+/g,' ').trim(), s: b.querySelector('.idx-s').innerText.replace(' ★','').trim()}))")
+    units = await pg.evaluate("[...document.querySelectorAll('.lindex .unit h3')].map(h => h.innerText)")
+    stv = await pg.evaluate("JSON.parse(localStorage.getItem('riyadiyat-saf1-v1'))")
+    want_s = {k: STATUS[(stv or {}).get('lessons', {}).get(k, {}).get('stage', 'new')] for k in EXPECT_TITLES}
+    ok_t = [x['t'] for x in items] == list(EXPECT_TITLES.values())
+    ok_s = all(x['s'] == want_s[x['id']] for x in items)
+    check(f'index [{tag}]: book titles in order, grouped by unit 6..10, status matches progress', ok_t and ok_s and len(units) == 5 and units[0].startswith('الوحدة ٦'), json.dumps({'items': items, 'want': want_s, 'units': units}, ensure_ascii=False))
+
+async def index_jump(pg, lid, child_first=False):
+    if child_first:
+        b0 = await pg.evaluate("JSON.stringify(JSON.parse(localStorage.getItem('riyadiyat-saf1-v1')).session)")
+        await pg.locator(f'.idx-lesson[data-id="{lid}"]').click()
+        await pg.locator('.modal').wait_for(timeout=3000)
+        await pg.locator('.modal .cancel').click(); await pg.wait_for_timeout(500)
+        b1 = await pg.evaluate("JSON.stringify(JSON.parse(localStorage.getItem('riyadiyat-saf1-v1')).session)")
+        check('child tap on a lesson does not jump (needs the parent question)', await pg.evaluate("document.body.dataset.screen") == 'home' and await pg.locator('.modal').count() == 0 and b0 == b1)
+    await pg.locator(f'.idx-lesson[data-id="{lid}"]').click()
+    await answer_lock(pg, wrong_first=child_first)
+    await pg.wait_for_function("document.body.dataset.screen === 'game' && window.__rs1", timeout=30000)
+    pl = await pg.evaluate("({lesson: window.__rs1.plan.lesson, gs: window.__rs1.plan.steps.map(s => s.lesson || '')})")
+    check(f'parent jump plays {lid} directly', pl['lesson'] == lid and all(x in ('', lid) for x in pl['gs']), json.dumps(pl)[:200])
+
 async def open_parent(pg):
     btn = pg.locator('.parent-btn'); bb = await btn.bounding_box()
     await pg.mouse.move(bb['x'] + 10, bb['y'] + 10); await pg.mouse.down(); await pg.wait_for_timeout(600); await pg.mouse.up()
     check('short tap does not open the parent lock', await pg.locator('.modal').count() == 0)
     await pg.mouse.down(); await pg.wait_for_timeout(2300); await pg.mouse.up()
-    await pg.locator('.modal').wait_for(timeout=3000)
-    q = await pg.locator('.modal p').inner_text()
-    ar = '٠١٢٣٤٥٦٧٨٩'; nums = [int(''.join(str(ar.index(c)) for c in x)) for x in re.findall('[٠-٩]+', q)]
-    await pg.locator('.keys button[data-d="1"]').click(); await pg.locator('.modal .ok').click()
-    check('wrong lock answer keeps panel closed', await pg.locator('.parent').count() == 0)
-    for d in str(nums[0] * nums[1]): await pg.locator(f'.keys button[data-d="{d}"]').click()
-    await pg.locator('.modal .ok').click()
+    await answer_lock(pg)
     await pg.locator('.screen.parent').wait_for(timeout=3000)
 
 async def main():
@@ -278,6 +322,7 @@ async def main():
         await pg.locator('.comp-card[data-k="2"]').click()
         await pg.locator('.btn.start').wait_for(timeout=15000)
         await layout(pg, 'home')
+        await check_index(pg, 'fresh')
         await pg.locator('.btn.start').click(); await pg.wait_for_function("document.body.dataset.screen === 'game' && window.__rs1", timeout=30000)
         mistakes = {'make10': True, 'drop': True, 'reverse': True, 'digits': True}
         # play until the middle of lesson 1 (first 'see' solo step), then reload
@@ -304,23 +349,32 @@ async def main():
         praises = [x for x in await pg.evaluate('window.__audioLog') if str(x).startswith('c_praise_')]
         check('praise phrases vary', len(set(praises)) >= 3, str(praises[:8]))
         check('game-end praise played', 't_done_game' in await pg.evaluate('window.__audioLog'))
-        # lessons 2..5 through the parent panel (school lesson + extra session)
+        await check_index(pg, 'after session 1')
+        await layout(pg, 'home with index')
+        # lessons 2..5: the parent taps the lesson in the home index, answers the lock question, and it plays directly
         for lid in (['u6l2', 'u6l3', 'u6l4', 'u6l5'] if not SHORT else ['u6l5']):
-            await open_parent(pg)
-            await layout(pg, 'parent panel')
-            if lid == 'u6l2':
-                txt = await pg.locator('.screen.parent .sum').inner_text()
-                check('parent summary sentence present', 'يحتاج' in txt or 'أتقن' in txt, txt)
-                check('parent panel lists real errors', await pg.locator('.errs li').count() >= 1)
-            await pg.locator('select.school').select_option(lid)
-            await pg.locator('.btn.extra').click()
-            await pg.locator('.btn.close').click()
-            await pg.locator('.btn.start').click(); await pg.wait_for_function("document.body.dataset.screen === 'game' && window.__rs1", timeout=30000)
+            if lid in ('u6l2', 'u6l5'):
+                await open_parent(pg)
+                await layout(pg, 'parent panel')
+                check('parent panel has no lesson dropdown any more', await pg.locator('select.school').count() == 0)
+                if lid == 'u6l2':
+                    txt = await pg.locator('.screen.parent .sum').inner_text()
+                    check('parent summary sentence present', 'يحتاج' in txt or 'أتقن' in txt, txt)
+                    check('parent panel lists real errors', await pg.locator('.errs li').count() >= 1)
+                await pg.locator('.btn.close').click()
+            await index_jump(pg, lid, child_first=(lid == 'u6l2'))
             mistakes['symbol'] = (lid == 'u6l5')
             r = await play_until(pg, lambda s: False, mistakes, tag=lid)
             check(f'{lid} session completes', r == 'home')
             stv = await pg.evaluate("JSON.parse(localStorage.getItem('riyadiyat-saf1-v1'))")
             check(f'{lid} passed (confirm stage)', stv['lessons'][lid]['stage'] in ('confirm', 'mastered'), stv['lessons'][lid]['stage'])
+            await pg.locator('.lindex').wait_for(timeout=10000); await check_index(pg, f'after {lid}')
+        # one ordinary session (extra session opened by the parent): reviews confirm lessons on another material
+        await open_parent(pg); await pg.locator('.btn.extra').click(); await pg.locator('.btn.close').click()
+        await pg.locator('.btn.start').click(); await pg.wait_for_function("document.body.dataset.screen === 'game' && window.__rs1", timeout=30000)
+        r = await play_until(pg, lambda s: False, mistakes, tag='normal')
+        check('ordinary session after the jumps completes', r == 'home')
+        await pg.locator('.lindex').wait_for(timeout=10000); await check_index(pg, 'after ordinary session')
         stv = await pg.evaluate("JSON.parse(localStorage.getItem('riyadiyat-saf1-v1'))")
         if not SHORT:
             check('lesson 6-1 mastered after the confirmation in a later session on another material', stv['lessons']['u6l1']['stage'] == 'mastered', stv['lessons']['u6l1'])

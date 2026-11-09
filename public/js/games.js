@@ -227,8 +227,9 @@ export async function compare(step) {
   }
   // symbol mode: dot cards (like the dominoes in the book) or plain numbers
   if (step.dots) {
-    const d = h(`<div class="dominoes" dir="rtl"><div class="dom" data-k="A"></div><div class="dom" data-k="B"></div></div>`); P.appendChild(d);
-    quantityPic($('[data-k=A]', d), a, 'bead'); quantityPic($('[data-k=B]', d), b, 'bead');
+    // stacked panels (big beads on a 360px phone); each panel carries its number so it maps to the line below
+    const d = h(`<div class="dominoes"><div class="dom" data-k="A"><span class="dom-n">${num(a)}</span><div class="dom-pic"></div></div><div class="dom" data-k="B"><span class="dom-n">${num(b)}</span><div class="dom-pic"></div></div></div>`); P.appendChild(d);
+    quantityPic($('[data-k=A] .dom-pic', d), a, 'bead'); quantityPic($('[data-k=B] .dom-pic', d), b, 'bead');
     await speak(['l5_count_dots']);
   }
   const ln = compareLine(P, a, b);

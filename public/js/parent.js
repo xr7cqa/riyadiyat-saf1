@@ -11,7 +11,7 @@ export const PERSONAL = {
   p_greet: { label: 'الترحيب الشخصي', text: (n) => `أَهْلًا يَا ${n}! هَيَّا نَلْعَبُ وَنَتَعَلَّمُ الرِّيَاضِيَّاتِ` },
   p_praise: { label: 'التشجيع الشخصي', text: (n) => `أَحْسَنْتَ يَا ${n}` },
 };
-const STAGE = { new: 'لم يبدأ', learning: 'يتعلّم', confirm: 'نجح مرة، ينتظر التأكيد في جلسة لاحقة', mastered: 'أتقنه ✓' };
+const STAGE = { new: 'لم يبدأ', learning: 'يتدرّب', confirm: 'نجح مرة، ينتظر التأكيد في جلسة لاحقة', mastered: 'أتقنه ✓' };
 
 export function holdToOpen(btn, onOpen) {
   let t = null;
@@ -20,9 +20,9 @@ export function holdToOpen(btn, onOpen) {
   btn.addEventListener('pointerdown', start); btn.addEventListener('pointerup', end); btn.addEventListener('pointerleave', end); btn.addEventListener('pointercancel', end);
   btn.addEventListener('click', (e) => e.preventDefault());
 }
-function askLock(onOpen) {
+export function askLock(onOpen, title = 'لوحة ولي الأمر') {
   const a = rint(12, 19), b = rint(3, 6);
-  const dlg = h(`<div class="modal"><div class="box"><h3>لوحة ولي الأمر</h3><p>اكتب ناتج: ${num(a)} × ${num(b)}</p>
+  const dlg = h(`<div class="modal lock"><div class="box"><h3>${title}</h3><p class="who">لولي الأمر فقط</p><p>اكتب ناتج: ${num(a)} × ${num(b)}</p>
      <div class="pin" dir="ltr"></div><div class="keys" dir="ltr">${[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((d) => `<button data-d="${d}">${ar(d)}</button>`).join('')}<button data-d="x">⌫</button></div>
      <div class="row"><button class="btn ok">فتح</button><button class="btn ghost cancel">إلغاء</button></div></div></div>`);
   document.body.appendChild(dlg);
@@ -61,7 +61,7 @@ export function openParent(app, { onClose }) {
    <header class="ptop"><h2>لوحة ولي الأمر</h2><button class="btn close">رجوع للعب</button></header>
    <section><h3>أين وصل</h3><p class="sum">${sm.text}</p><div class="homeact"><b>نشاط بيت (دقيقة):</b> ${sm.home}</div></section>
    <section><h3>الدروس (الوحدة ${num(6)}: ${UNIT6.title})</h3><ul class="lessons">${LESSONS.map((l) => { const x = L(l.id); return `<li><span>درس ${l.code} ص ${num(l.page)}: ${l.title}</span><em class="st-${x.stage}">${STAGE[x.stage]}</em><small>محاولات ${num(x.attempts)}، صحيحة ${num(x.correct)}</small></li>`; }).join('')}</ul>
-     <label class="sel">درس اليوم في المدرسة: <select class="school"><option value="auto">تلقائي (الدرس التالي)</option>${LESSONS.map((l) => `<option value="${l.id}" ${st.settings.schoolLesson === l.id ? 'selected' : ''}>ص ${ar(l.page)}: ${l.title}</option>`).join('')}</select></label></section>
+     <p class="hint">لتشغيل أي درس مباشرة: المسوا عنوانه في «فهرس الدروس» بالشاشة الرئيسية ثم أجيبوا سؤال ولي الأمر.</p></section>
    <section><h3>أساسات الترم الأول</h3><ul class="found">${Object.entries(FOUNDATION).map(([k, f]) => { const s = st.foundation.skills[k]; return `<li>${f.name}: <em>${!s ? 'لم تُفحص بعد' : s.status === 'weak' ? 'يحتاج تدريب' : 'جيد'}</em></li>`; }).join('')}</ul></section>
    <section><h3>أخطاء حقيقية حديثة</h3>${st.errors.length ? `<ul class="errs">${st.errors.slice(0, 8).map((e) => `<li><small>${fmtDate(new Date(e.d))}</small> ${esc(e.text)}</li>`).join('')}</ul>` : '<p>لا أخطاء مسجّلة بعد.</p>'}
      <p class="note">اللمسات التي سقطت خارج مكانها لا تُحسب أخطاء (عددها: ${num(st.misses)}).</p></section>
@@ -80,7 +80,6 @@ export function openParent(app, { onClose }) {
   </div>`);
   app.innerHTML = ''; app.appendChild(el);
   $('.close', el).onclick = () => onClose();
-  $('.school', el).onchange = (e) => { st.settings.schoolLesson = e.target.value; save(); };
   $('.extra', el).onclick = (e) => { st.sessions.extraDay = todayKey(); save(); e.target.textContent = 'الجلسة الإضافية مفتوحة ✓'; };
   $('.vol', el).oninput = (e) => { st.settings.volume = +e.target.value; save(); };
   $('.test', el).onclick = () => say('t_welcome');

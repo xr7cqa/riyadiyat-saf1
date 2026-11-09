@@ -26,7 +26,7 @@ export function mountGame(app, { onHome } = {}) {
 }
 export function clearPlay() { G.play.innerHTML = ''; return G.play; }
 export async function task(text, clips = [], { wait = true } = {}) {
-  $('.task-text', G.root).innerHTML = text;
+  $('.task-text', G.root).innerHTML = `<span class="tt">${text}</span>`; // inline span: keeps the real space between a word and an isolated number
   G.replay = clips;
   talking(true);
   const p = say(clips).finally(() => talking(false));

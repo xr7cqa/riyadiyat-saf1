@@ -1,6 +1,11 @@
 {
  "checks": [
   [
+   "index [fresh]: book titles in order, grouped by unit 6..10, status matches progress",
+   true,
+   "{\"items\": [{\"id\": \"u6l1\", \"t\": \"ص ٨ العددان ١١ و١٢\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l2\", \"t\": \"ص ١٢ الأعداد ١٣ و١٤ و١٥\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l3\", \"t\": \"ص ١٦ الأعداد ١٦ و١٧ و١٨\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l4\", \"t\": \"ص ٢٠ العددان ١٩ و٢٠\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l5\", \"t\": \"ص ٢٢ مقارنة الأعداد ضمن ٢٠\", \"s\": \"لم يبدأ\"}], \"want\": {\"u6l1\": \"لم يبدأ\", \"u6l2\": \"لم يبدأ\", \"u6l3\": \"لم يبدأ\", \"u6l4\": \"لم يبدأ\", \"u6l5\": \"لم يبدأ\"}, \"units\": [\"الوحدة ٦: الأعداد حتى ٢٠\", \"الوحدة ٧: الجمع والطرح ضمن ٢٠\", \"الوحدة ٨: الأعداد ضمن ١٠٠\", \"الوحدة ٩: الجمع والطرح ضمن ١٠٠\", \"الوحدة ١٠: القياس\"]}"
+  ],
+  [
    "count-once: re-tapping a counted object does not count it",
    true,
    ""
@@ -28,7 +33,7 @@
   [
    "board reached target",
    true,
-   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False} target 12"
+   "{'n': 11, 'tens': 1, 'bundle': True, 'balloon': False} target 11"
   ],
   [
    "placement rounds then warm-up for weak skill",
@@ -51,9 +56,9 @@
    "23 vs 23"
   ],
   [
-   "digit tiles reversed -> place-value hint",
+   "reversed digits -> place-value hint (tens/ones highlighted + h_pv)",
    true,
-   "['t_digits', 'h_pv', 't_new_try']"
+   "['h_pv', 't_new_try']"
   ],
   [
    "board reached target",
@@ -83,7 +88,7 @@
   [
    "praise phrases vary",
    true,
-   "['c_praise_5', 'c_praise_1', 'c_praise_3', 'c_praise_4']"
+   "['c_praise_4', 'c_praise_2', 'c_praise_4', 'c_praise_1']"
   ],
   [
    "game-end praise played",
@@ -91,12 +96,22 @@
    ""
   ],
   [
+   "index [after session 1]: book titles in order, grouped by unit 6..10, status matches progress",
+   true,
+   "{\"items\": [{\"id\": \"u6l1\", \"t\": \"ص ٨ العددان ١١ و١٢\", \"s\": \"يتدرب\"}, {\"id\": \"u6l2\", \"t\": \"ص ١٢ الأعداد ١٣ و١٤ و١٥\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l3\", \"t\": \"ص ١٦ الأعداد ١٦ و١٧ و١٨\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l4\", \"t\": \"ص ٢٠ العددان ١٩ و٢٠\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l5\", \"t\": \"ص ٢٢ مقارنة الأعداد ضمن ٢٠\", \"s\": \"لم يبدأ\"}], \"want\": {\"u6l1\": \"يتدرب\", \"u6l2\": \"لم يبدأ\", \"u6l3\": \"لم يبدأ\", \"u6l4\": \"لم يبدأ\", \"u6l5\": \"لم يبدأ\"}, \"units\": [\"الوحدة ٦: الأعداد حتى ٢٠\", \"الوحدة ٧: الجمع والطرح ضمن ٢٠\", \"الوحدة ٨: الأعداد ضمن ١٠٠\", \"الوحدة ٩: الجمع والطرح ضمن ١٠٠\", \"الوحدة ١٠: القياس\"]}"
+  ],
+  [
    "short tap does not open the parent lock",
    true,
    ""
   ],
   [
-   "wrong lock answer keeps panel closed",
+   "wrong lock answer changes nothing",
+   true,
+   ""
+  ],
+  [
+   "parent panel has no lesson dropdown any more",
    true,
    ""
   ],
@@ -111,9 +126,19 @@
    ""
   ],
   [
-   "reversed digits -> place-value hint (tens/ones highlighted + h_pv)",
+   "child tap on a lesson does not jump (needs the parent question)",
    true,
-   "['h_pv', 't_new_try']"
+   ""
+  ],
+  [
+   "wrong lock answer changes nothing",
+   true,
+   ""
+  ],
+  [
+   "parent jump plays u6l2 directly",
+   true,
+   "{\"lesson\": \"u6l2\", \"gs\": [\"\", \"\", \"u6l2\", \"\", \"u6l2\", \"\", \"u6l2\", \"u6l2\", \"u6l2\", \"u6l2\", \"\", \"u6l2\", \"u6l2\", \"\"]}"
   ],
   [
    "board reached target",
@@ -123,7 +148,12 @@
   [
    "board reached target",
    true,
-   "{'n': 13, 'tens': 1, 'bundle': False, 'balloon': False} target 13"
+   "{'n': 14, 'tens': 1, 'bundle': False, 'balloon': False} target 14"
+  ],
+  [
+   "digit tiles reversed -> place-value hint",
+   true,
+   "['t_digits', 'h_pv', 't_new_try']"
   ],
   [
    "board reached target",
@@ -141,19 +171,14 @@
    "confirm"
   ],
   [
-   "short tap does not open the parent lock",
+   "index [after u6l2]: book titles in order, grouped by unit 6..10, status matches progress",
    true,
-   ""
+   "{\"items\": [{\"id\": \"u6l1\", \"t\": \"ص ٨ العددان ١١ و١٢\", \"s\": \"يتدرب\"}, {\"id\": \"u6l2\", \"t\": \"ص ١٢ الأعداد ١٣ و١٤ و١٥\", \"s\": \"يتدرب\"}, {\"id\": \"u6l3\", \"t\": \"ص ١٦ الأعداد ١٦ و١٧ و١٨\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l4\", \"t\": \"ص ٢٠ العددان ١٩ و٢٠\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l5\", \"t\": \"ص ٢٢ مقارنة الأعداد ضمن ٢٠\", \"s\": \"لم يبدأ\"}], \"want\": {\"u6l1\": \"يتدرب\", \"u6l2\": \"يتدرب\", \"u6l3\": \"لم يبدأ\", \"u6l4\": \"لم يبدأ\", \"u6l5\": \"لم يبدأ\"}, \"units\": [\"الوحدة ٦: الأعداد حتى ٢٠\", \"الوحدة ٧: الجمع والطرح ضمن ٢٠\", \"الوحدة ٨: الأعداد ضمن ١٠٠\", \"الوحدة ٩: الجمع والطرح ضمن ١٠٠\", \"الوحدة ١٠: القياس\"]}"
   ],
   [
-   "wrong lock answer keeps panel closed",
+   "parent jump plays u6l3 directly",
    true,
-   ""
-  ],
-  [
-   "board reached target",
-   true,
-   "{'n': 12, 'tens': 1, 'bundle': False, 'balloon': False} target 12"
+   "{\"lesson\": \"u6l3\", \"gs\": [\"\", \"\", \"u6l3\", \"\", \"u6l3\", \"\", \"u6l3\", \"u6l3\", \"u6l3\", \"u6l3\", \"\", \"u6l3\", \"u6l3\", \"\"]}"
   ],
   [
    "board reached target",
@@ -181,19 +206,14 @@
    "confirm"
   ],
   [
-   "short tap does not open the parent lock",
+   "index [after u6l3]: book titles in order, grouped by unit 6..10, status matches progress",
    true,
-   ""
+   "{\"items\": [{\"id\": \"u6l1\", \"t\": \"ص ٨ العددان ١١ و١٢\", \"s\": \"يتدرب\"}, {\"id\": \"u6l2\", \"t\": \"ص ١٢ الأعداد ١٣ و١٤ و١٥\", \"s\": \"يتدرب\"}, {\"id\": \"u6l3\", \"t\": \"ص ١٦ الأعداد ١٦ و١٧ و١٨\", \"s\": \"يتدرب\"}, {\"id\": \"u6l4\", \"t\": \"ص ٢٠ العددان ١٩ و٢٠\", \"s\": \"لم يبدأ\"}, {\"id\": \"u6l5\", \"t\": \"ص ٢٢ مقارنة الأعداد ضمن ٢٠\", \"s\": \"لم يبدأ\"}], \"want\": {\"u6l1\": \"يتدرب\", \"u6l2\": \"يتدرب\", \"u6l3\": \"يتدرب\", \"u6l4\": \"لم يبدأ\", \"u6l5\": \"لم يبدأ\"}, \"units\": [\"الوحدة ٦: الأعداد حتى ٢٠\", \"الوحدة ٧: الجمع والطرح ضمن ٢٠\", \"الوحدة ٨: الأعداد ضمن ١٠٠\", \"الوحدة ٩: الجمع والطرح ضمن ١٠٠\", \"الوحدة ١٠: القياس\"]}"
   ],
   [
-   "wrong lock answer keeps panel closed",
+   "parent jump plays u6l4 directly",
    true,
-   ""
-  ],
-  [
-   "board reached target",
-   true,
-   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': True} target 12"
+   "{\"lesson\": \"u6l4\", \"gs\": [\"\", \"\", \"u6l4\", \"\", \"u6l4\", \"\", \"u6l4\", \"u6l4\", \"u6l4\", \"u6l4\", \"\", \"u6l4\", \"u6l4\", \"\"]}"
   ],
   [
    "board reached target",
@@ -221,29 +241,39 @@
    "confirm"
   ],
   [
+   "index [after u6l4]: book titles in order, grouped by unit 6..10, status matches progress",
+   true,
+   "{\"items\": [{\"id\": \"u6l1\", \"t\": \"ص ٨ العددان ١١ و١٢\", \"s\": \"يتدرب\"}, {\"id\": \"u6l2\", \"t\": \"ص ١٢ الأعداد ١٣ و١٤ و١٥\", \"s\": \"يتدرب\"}, {\"id\": \"u6l3\", \"t\": \"ص ١٦ الأعداد ١٦ و١٧ و١٨\", \"s\": \"يتدرب\"}, {\"id\": \"u6l4\", \"t\": \"ص ٢٠ العددان ١٩ و٢٠\", \"s\": \"يتدرب\"}, {\"id\": \"u6l5\", \"t\": \"ص ٢٢ مقارنة الأعداد ضمن ٢٠\", \"s\": \"لم يبدأ\"}], \"want\": {\"u6l1\": \"يتدرب\", \"u6l2\": \"يتدرب\", \"u6l3\": \"يتدرب\", \"u6l4\": \"يتدرب\", \"u6l5\": \"لم يبدأ\"}, \"units\": [\"الوحدة ٦: الأعداد حتى ٢٠\", \"الوحدة ٧: الجمع والطرح ضمن ٢٠\", \"الوحدة ٨: الأعداد ضمن ١٠٠\", \"الوحدة ٩: الجمع والطرح ضمن ١٠٠\", \"الوحدة ١٠: القياس\"]}"
+  ],
+  [
    "short tap does not open the parent lock",
    true,
    ""
   ],
   [
-   "wrong lock answer keeps panel closed",
+   "wrong lock answer changes nothing",
    true,
    ""
   ],
   [
-   "board reached target",
+   "parent panel has no lesson dropdown any more",
    true,
-   "{'n': 11, 'tens': 1, 'bundle': True, 'balloon': True} target 11"
+   ""
+  ],
+  [
+   "parent jump plays u6l5 directly",
+   true,
+   "{\"lesson\": \"u6l5\", \"gs\": [\"\", \"\", \"u6l5\", \"\", \"u6l5\", \"\", \"u6l5\", \"u6l5\", \"u6l5\", \"u6l5\", \"\", \"u6l5\", \"u6l5\", \"\"]}"
   ],
   [
    "compare 14 ? 12: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 449, \"bx\": 308.046875, \"open\": \"right\", \"at\": \"١٤\", \"bt\": \"١٢\"}"
+   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"right\", \"at\": \"١٤\", \"bt\": \"١٢\"}"
   ],
   [
    "compare 13 ? 15: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 449, \"bx\": 308.046875, \"open\": \"left\", \"at\": \"١٣\", \"bt\": \"١٥\"}"
+   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"left\", \"at\": \"١٣\", \"bt\": \"١٥\"}"
   ],
   [
    "mirrored symbol -> \"opening faces the bigger number\" hint + bead rows",
@@ -251,19 +281,19 @@
    "['h_sym', 'l5_left']"
   ],
   [
-   "compare 14 ? 16: first number on the right & opening faces bigger",
+   "compare 19 ? 12: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 449, \"bx\": 308.046875, \"open\": \"left\", \"at\": \"١٤\", \"bt\": \"١٦\"}"
+   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"right\", \"at\": \"١٩\", \"bt\": \"١٢\"}"
   ],
   [
-   "compare 16 ? 16: first number on the right & opening faces bigger",
+   "compare 12 ? 12: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 449, \"bx\": 308.046875, \"open\": \"eq\", \"at\": \"١٦\", \"bt\": \"١٦\"}"
+   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"eq\", \"at\": \"١٢\", \"bt\": \"١٢\"}"
   ],
   [
-   "compare 20 ? 18: first number on the right & opening faces bigger",
+   "compare 10 ? 12: first number on the right & opening faces bigger",
    true,
-   "{\"ax\": 449, \"bx\": 308.046875, \"open\": \"right\", \"at\": \"٢٠\", \"bt\": \"١٨\"}"
+   "{\"ax\": 449, \"bx\": 297.515625, \"open\": \"left\", \"at\": \"١٠\", \"bt\": \"١٢\"}"
   ],
   [
    "u6l5 session completes",
@@ -276,22 +306,65 @@
    "confirm"
   ],
   [
+   "index [after u6l5]: book titles in order, grouped by unit 6..10, status matches progress",
+   true,
+   "{\"items\": [{\"id\": \"u6l1\", \"t\": \"ص ٨ العددان ١١ و١٢\", \"s\": \"يتدرب\"}, {\"id\": \"u6l2\", \"t\": \"ص ١٢ الأعداد ١٣ و١٤ و١٥\", \"s\": \"يتدرب\"}, {\"id\": \"u6l3\", \"t\": \"ص ١٦ الأعداد ١٦ و١٧ و١٨\", \"s\": \"يتدرب\"}, {\"id\": \"u6l4\", \"t\": \"ص ٢٠ العددان ١٩ و٢٠\", \"s\": \"يتدرب\"}, {\"id\": \"u6l5\", \"t\": \"ص ٢٢ مقارنة الأعداد ضمن ٢٠\", \"s\": \"يتدرب\"}], \"want\": {\"u6l1\": \"يتدرب\", \"u6l2\": \"يتدرب\", \"u6l3\": \"يتدرب\", \"u6l4\": \"يتدرب\", \"u6l5\": \"يتدرب\"}, \"units\": [\"الوحدة ٦: الأعداد حتى ٢٠\", \"الوحدة ٧: الجمع والطرح ضمن ٢٠\", \"الوحدة ٨: الأعداد ضمن ١٠٠\", \"الوحدة ٩: الجمع والطرح ضمن ١٠٠\", \"الوحدة ١٠: القياس\"]}"
+  ],
+  [
+   "short tap does not open the parent lock",
+   true,
+   ""
+  ],
+  [
+   "wrong lock answer changes nothing",
+   true,
+   ""
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False} target 12"
+  ],
+  [
+   "untie shows ten single pencils again",
+   true,
+   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False}->{'n': 12, 'tens': 0, 'bundle': True, 'balloon': False}"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 11, 'tens': 1, 'bundle': True, 'balloon': False} target 11"
+  ],
+  [
+   "board reached target",
+   true,
+   "{'n': 12, 'tens': 1, 'bundle': True, 'balloon': False} target 12"
+  ],
+  [
+   "ordinary session after the jumps completes",
+   true,
+   ""
+  ],
+  [
+   "index [after ordinary session]: book titles in order, grouped by unit 6..10, status matches progress",
+   true,
+   "{\"items\": [{\"id\": \"u6l1\", \"t\": \"ص ٨ العددان ١١ و١٢\", \"s\": \"أتقنه\"}, {\"id\": \"u6l2\", \"t\": \"ص ١٢ الأعداد ١٣ و١٤ و١٥\", \"s\": \"أتقنه\"}, {\"id\": \"u6l3\", \"t\": \"ص ١٦ الأعداد ١٦ و١٧ و١٨\", \"s\": \"يتدرب\"}, {\"id\": \"u6l4\", \"t\": \"ص ٢٠ العددان ١٩ و٢٠\", \"s\": \"يتدرب\"}, {\"id\": \"u6l5\", \"t\": \"ص ٢٢ مقارنة الأعداد ضمن ٢٠\", \"s\": \"يتدرب\"}], \"want\": {\"u6l1\": \"أتقنه\", \"u6l2\": \"أتقنه\", \"u6l3\": \"يتدرب\", \"u6l4\": \"يتدرب\", \"u6l5\": \"يتدرب\"}, \"units\": [\"الوحدة ٦: الأعداد حتى ٢٠\", \"الوحدة ٧: الجمع والطرح ضمن ٢٠\", \"الوحدة ٨: الأعداد ضمن ١٠٠\", \"الوحدة ٩: الجمع والطرح ضمن ١٠٠\", \"الوحدة ١٠: القياس\"]}"
+  ],
+  [
    "lesson 6-1 mastered after the confirmation in a later session on another material",
    true,
    {
     "stage": "mastered",
-    "streak": 4,
-    "passDay": "2026-11-09",
-    "attempts": 12,
-    "correct": 10,
+    "streak": 10,
+    "passDay": "2026-11-10",
+    "attempts": 14,
+    "correct": 13,
     "skins": [
      "pencil",
-     "bead",
-     "egg",
-     "balloon"
+     "bead"
     ],
     "passSession": 1,
-    "masteredDay": "2026-11-09"
+    "masteredDay": "2026-11-10"
    }
   ],
   [
@@ -305,7 +378,7 @@
    ""
   ],
   [
-   "wrong lock answer keeps panel closed",
+   "wrong lock answer changes nothing",
    true,
    ""
   ],
@@ -320,16 +393,6 @@
    ""
   ],
   [
-   "compare 10 ? 14: first number on the right & opening faces bigger",
-   true,
-   "{\"ax\": 449, \"bx\": 308.046875, \"open\": \"left\", \"at\": \"١٠\", \"bt\": \"١٤\"}"
-  ],
-  [
-   "compare 14 ? 12: first number on the right & opening faces bigger",
-   true,
-   "{\"ax\": 449, \"bx\": 308.046875, \"open\": \"right\", \"at\": \"١٤\", \"bt\": \"١٢\"}"
-  ],
-  [
    "offline: games run and audio files load from cache",
    true,
    "[]"
@@ -337,12 +400,18 @@
   [
    "no JS errors",
    true,
-   "['Failed to load resource: net::ERR_FAILED']"
+   "[]"
   ]
  ],
  "fail": [],
- "steps": 110,
+ "steps": 116,
  "layout_fail": [],
  "viewport": "800x1280",
+ "domino_cell_px": [
+  26,
+  26,
+  26,
+  26
+ ],
  "ok": true
 }
