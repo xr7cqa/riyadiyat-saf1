@@ -10,8 +10,6 @@ const PHASE_LABEL = { demo: 'انظر', guided: 'معًا', solo: 'وحدك', st
 
 export function todaysLesson() {
   const st = S();
-  const sel = st.settings.schoolLesson;
-  if (sel && sel !== 'auto' && lessonById(sel)) return lessonById(sel);
   return LESSONS.find((l) => !['mastered', 'confirm'].includes(L(l.id).stage)) || LESSONS.find((l) => L(l.id).stage === 'confirm') || null;
 }
 
@@ -42,16 +40,17 @@ function reviewPlan(today) {
   return out;
 }
 
-export function buildPlan() {
-  const st = S(); const steps = [];
-  if (!st.foundation.done) steps.push(...foundationPlan());
-  const today = todaysLesson();
-  const rev = st.foundation.done ? reviewPlan(today) : [];
+export function buildPlan(forceLesson = null) {
+  // forceLesson: a parent picked this lesson from the index -> play it directly (no intro round / review / warm-up)
+  const st = S(); const steps = []; const direct = !!(forceLesson && lessonById(forceLesson));
+  if (!st.foundation.done && !direct) steps.push(...foundationPlan());
+  const today = direct ? lessonById(forceLesson) : todaysLesson();
+  const rev = st.foundation.done && !direct ? reviewPlan(today) : [];
   if (rev.length) steps.push({ g: 'say', clips: ['t_review'], text: 'نبدأ بسؤالين مما تعلمنا' }, ...rev);
   if (today) {
     // foundation warm-up if a skill this lesson needs is weak
     const weak = today.needs.filter((k) => st.foundation.skills[k]?.status === 'weak').slice(0, 2);
-    if (weak.length || !st.foundation.done) steps.push({ g: 'warmups', lesson: today.id });
+    if (!direct && (weak.length || !st.foundation.done)) steps.push({ g: 'warmups', lesson: today.id });
     steps.push({ g: 'say', clips: ['t_today'], text: `درس اليوم: ${today.title}`, lessonTitle: today.id });
     const plan = today.plan().map((s) => Object.assign(s, { lesson: today.id }));
     for (const s of plan) {
@@ -136,9 +135,10 @@ async function runStep(step, plan) {
 
 let RUN = 0;
 export const stopSession = () => { RUN++; };
-export async function runSession(app, { onExit, resume = false }) {
+export async function runSession(app, { onExit, resume = false, forceLesson = null }) {
   const st = S(); const my = ++RUN;
-  if (!resume || !st.session) { st.sessions.count++; st.session = buildPlan(); save(); }
+  if (forceLesson) { st.sessions.count++; st.session = buildPlan(forceLesson); save(); }
+  else if (!resume || !st.session) { st.sessions.count++; st.session = buildPlan(); save(); }
   const plan = st.session;
   mountGame(app, { onHome: () => { RUN++; save(); onExit(); } });
   if (resume && plan.idx > 0) await task('نكمل من حيث توقفنا', ['t_resume']);

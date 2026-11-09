@@ -4,7 +4,8 @@ import { say, unlock, loadPersonal, hasPersonal, log, stop } from './audio.js';
 import { h, $, $$ } from './engine.js';
 import * as A from './art.js';
 import { runSession } from './session.js';
-import { openParent, holdToOpen } from './parent.js';
+import { openParent, holdToOpen, askLock } from './parent.js';
+import { UNITS, INDEX_STATUS } from './units.js';
 import { registerSW, setReloadGuard, maybeReload } from './pwa.js';
 import { LESSONS } from './content-u6.js';
 import { lesson as L } from './store.js';
@@ -17,10 +18,10 @@ function garden() {
   const n = S().stars; const trees = Math.floor(n / 10), flowers = n % 10;
   return `<div class="garden" aria-label="حديقة النجوم">${Array.from({ length: trees }, () => A.tree()).join('')}${Array.from({ length: flowers }, (_, i) => A.flower(i)).join('')}${n === 0 ? '<span class="seed">🌱</span>' : ''}</div>`;
 }
-function lessonPath() {
-  return `<ol class="path">${LESSONS.map((l) => { const s = L(l.id).stage; return `<li class="st-${s}"><span class="dot">${s === 'mastered' ? '★' : s === 'confirm' ? '☆' : ''}</span><small>ص ${ar(l.page)}</small></li>`; }).join('')}</ol>`;
+// Lesson index, grouped by unit (data-driven from units.js). The child can look; only a parent (lock question) can jump.
+function lessonIndex() {
+  return `<section class="lindex" aria-label="فهرس الدروس"><h2>فهرس الدروس</h2>${UNITS.map((u) => `<div class="unit" data-unit="${u.id}"><h3>الوحدة ${num(u.id)}: ${u.title}</h3>${u.lessons.length ? `<ul>${u.lessons.map((l) => { const s = L(l.id).stage; return `<li><button class="idx-lesson st-${s}" data-id="${l.id}"><span class="idx-t">ص ${num(l.page)} ${l.title}</span><em class="idx-s" data-stage="${s}">${INDEX_STATUS[s]}${s === 'mastered' ? ' ★' : ''}</em></button></li>`; }).join('')}</ul>` : '<p class="soon">قريبًا</p>'}</div>`).join('')}</section>`;
 }
-
 function home() {
   screen = 'home'; document.body.dataset.screen = 'home';
   const st = S();
@@ -33,10 +34,20 @@ function home() {
     <header class="htop"><h1>رياضيات الصف الأول</h1><button class="parent-btn" aria-label="ولي الأمر (اضغط مطوّلًا)">⚙️</button></header>
     <div class="hero"><div class="comp-big">${comp.svg}</div><div class="stars-mini">${A.star()}<span>${ar(st.stars)}</span></div></div>
     ${garden()}
-    ${lessonPath()}
     ${locked ? `<div class="bye">انتهينا اليوم 🌙 نلتقي غدًا</div>` : `<button class="btn start">${st.session ? 'نكمل اللعب ▶' : 'ابدأ اللعب ▶'}</button>`}
+    ${lessonIndex()}
   </div>`);
   app.appendChild(el);
+  $('.lindex', el).onclick = (e) => {
+    const b = e.target.closest('.idx-lesson'); if (!b) return;
+    const l = UNITS.flatMap((u) => u.lessons).find((x) => x.id === b.dataset.id); if (!l) return;
+    // a child tap only opens the parent question; without the right answer nothing changes
+    askLock(async () => {
+      unlock(); stop();
+      screen = 'game'; document.body.dataset.screen = 'game';
+      await runSession(app, { forceLesson: l.id, onExit: () => { stop(); home(); maybeReload(); } });
+    }, `تشغيل درس ص ${num(l.page)} ${l.title}`);
+  };
   holdToOpen($('.parent-btn', el), () => { screen = 'parent'; document.body.dataset.screen = 'parent'; openParent(app, { onClose: home }); });
   const start = $('.start', el);
   if (start) start.onclick = async () => {
@@ -76,7 +87,8 @@ function pickCompanion() {
 setInterval(() => { if (!document.hidden && screen === 'game') tickUsage(10); }, 10000);
 
 (async () => {
-  try { window.__VERSION__ = (await (await fetch('asset-list.json')).json()).version; } catch (e) { }
+  // never block the first screen on the network: the version label is filled in when it arrives
+  fetch('asset-list.json').then((r) => r.json()).then((j) => { window.__VERSION__ = j.version; }).catch(() => { });
   await loadPersonal().catch(() => { });
   registerSW();
   home();
